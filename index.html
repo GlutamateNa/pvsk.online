@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>pvsk.online</title>
+  <style>
+    html, body{
+      height: 100%;
+      margin: 0;
+    }
+
+    body{
+      background-color: #000;   /* 视频未加载时的底色 */
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC",
+                   "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      color: #fff;
+    }
+
+    /* ✅ 视频背景 */
+    .bg-video{
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;     /* 铺满屏幕，不留白边 */
+      object-position: center;
+      z-index: 0;
+    }
+
+    /* 轻微遮罩：让白字更清晰 */
+    .overlay{
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(0,0,0,0.28),
+        rgba(0,0,0,0.12) 45%,
+        rgba(0,0,0,0.32)
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .container{
+      position: relative;
+      height: 100vh;
+      width: 100%;
+      z-index: 2;  /* 内容在最上层 */
+    }
+
+    /* 标题（保持你当前设置：向下 + 更大） */
+    .title{
+      position: absolute;
+      top: 36%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      font-size: clamp(28px, 4.2vw, 52px);
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #ffffff;
+      white-space: nowrap;
+      padding: 0 12px;
+    }
+
+    /* 你指定的按钮效果（保持不变） */
+    .enter-btn{
+      display: inline-block;
+      padding: 18px 48px;
+      border-radius: 999px;
+      background: transparent;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+      text-decoration: none;
+      border: 2px solid rgba(255,255,255,0.9);
+      letter-spacing: 1px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+      transition: background 0.15s ease;
+    }
+    .enter-btn:hover{
+      background: rgba(255,255,255,0.12);
+    }
+
+    /* 按钮位置：居中偏下（保持不变） */
+    .enter-wrap{
+      position: absolute;
+      left: 50%;
+      top: 68%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* 底部小字（保持你当前：更小） */
+    .footer{
+      position: absolute;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      width: min(980px, 92vw);
+      text-align: center;
+      font-size: 11px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.80);
+      letter-spacing: 0.3px;
+      text-shadow: 0 0 10px rgba(0,0,0,0.35);
+    }
+    .footer a{
+      color: rgba(255,255,255,0.86);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.35);
+      padding-bottom: 1px;
+    }
+    .footer a:hover{
+      border-bottom-color: rgba(255,255,255,0.75);
+    }
+
+    @media (max-width: 520px){
+      .title{ top: 11%; font-size: clamp(24px, 6vw, 44px); }
+      .enter-wrap{ top: 66%; }
+      .footer{ font-size: 10.5px; bottom: 14px; }
+      .enter-btn{ padding: 16px 42px; font-size: 18px; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ✅ 背景视频：自动播放/静音/循环（移动端需要 muted 才能自动播放） -->
+  <video class="bg-video" autoplay muted loop playsinline preload="auto">
+    <source src="back.mp4" type="video/mp4">
+  </video>
+
+  <div class="overlay"></div>
+
+  <div class="container">
+    <div class="title">钙钛矿online</div>
+
+    <div class="enter-wrap">
+      <a class="enter-btn" href="page2.html">Welcome</a>
+    </div>
+
+    <div class="footer">
+      华中科技大学光学与电子信息学院&nbsp;&nbsp;单片集成光电子器件与系统团队&nbsp;&nbsp;联系方式：
+      <a href="mailto:1744996809@qq.com">1744996809@qq.com</a>
+    </div>
+  </div>
+</body>
+</html>

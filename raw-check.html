@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>原料检测 | pvsk.online</title>
+  <style>
+    :root{
+      --bg:#05070d;
+      --text: rgba(231, 238, 255, 0.92);
+      --muted: rgba(231, 238, 255, 0.66);
+
+      --neon:#6aa7ff;
+      --neon2:#44d7ff;
+
+      --panel: rgba(255,255,255,0.045);
+      --border: rgba(106,167,255,0.22);
+
+      --glow: 0 0 16px rgba(106,167,255,0.22), 0 0 30px rgba(68,215,255,0.10);
+      --glow-strong: 0 0 18px rgba(106,167,255,0.38), 0 0 42px rgba(68,215,255,0.18);
+
+      --radius: 18px;
+      --radius2: 14px;
+    }
+
+    html,body{margin:0;min-height:100%;}
+    body{
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC",
+                   "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      background: var(--bg);
+      position: relative;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    /* 冷蓝科幻背景 */
+    body::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(980px 560px at 70% 18%, rgba(106,167,255,0.22), transparent 60%),
+        radial-gradient(760px 520px at 22% 78%, rgba(68,215,255,0.14), transparent 62%),
+        radial-gradient(560px 420px at 10% 20%, rgba(43,91,255,0.12), transparent 58%),
+        linear-gradient(180deg, rgba(255,255,255,0.06), transparent 45%);
+      pointer-events:none;
+      filter: saturate(1.05);
+    }
+    body::after{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.07) 0 1px, transparent 1px 40px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 62px);
+      opacity: 0.09;
+      pointer-events:none;
+    }
+
+    .wrap{
+      position: relative;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 22px 16px 56px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:14px;
+      color: var(--muted);
+    }
+    .topbar a{
+      color: var(--text);
+      text-decoration:none;
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(106,167,255,0.06);
+      box-shadow: var(--glow);
+    }
+    .topbar a:hover{
+      background: rgba(106,167,255,0.11);
+      box-shadow: var(--glow-strong);
+    }
+
+    h1{
+      margin: 0;
+      font-size: 18px;
+      font-weight: 650;
+      letter-spacing: 1px;
+      text-shadow: 0 0 18px rgba(106,167,255,0.25);
+    }
+    .subtitle{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .panel{
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--panel);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--glow);
+      overflow: hidden;
+    }
+
+    /* 表格区域 */
+    .table-wrap{ padding: 14px; }
+
+    table{
+      width: 100%;                 /* ✅ 全宽不变 */
+      table-layout: fixed;         /* 让列宽可控且稳定 */
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 12px;
+      border: 1px solid rgba(106,167,255,0.20);
+      background: rgba(255,255,255,0.03);
+    }
+
+    caption{
+      caption-side: top;
+      text-align: left;
+      padding: 12px 12px 10px;
+      color: rgba(231,238,255,0.92);
+      font-weight: 650;
+      letter-spacing: 0.6px;
+      background: linear-gradient(180deg, rgba(106,167,255,0.08), transparent);
+      border-bottom: 1px solid rgba(106,167,255,0.16);
+    }
+
+    thead th{
+      font-size: 13px;
+      color: rgba(231,238,255,0.78);
+      letter-spacing: 0.8px;
+      padding: 10px 12px;
+      background: rgba(106,167,255,0.06);
+      border-bottom: 1px solid rgba(106,167,255,0.16);
+    }
+
+    tbody td{
+      padding: 12px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      color: rgba(231,238,255,0.86);
+      vertical-align: middle;
+    }
+    tbody tr:hover td{ background: rgba(106,167,255,0.05); }
+
+    /* ✅ 关键：左右留白列 + 两列分别居中 + 中间留间距 */
+    col.pad { width: 14%; }
+    col.chem { width: 36%; }
+    col.amt { width: 36%; }
+    col.pad2 { width: 14%; }
+
+    th.padcol, td.padcol{
+      padding: 0;
+      color: transparent;
+      user-select: none;
+    }
+
+    th.chemcol, td.chemcol,
+    th.amtcol, td.amtcol{
+      text-align: center;         /* ✅ 两列分别居中 */
+    }
+
+    /* ✅ 两列之间留出视觉间距（不改变居中对齐） */
+    th.chemcol, td.chemcol{ padding-right: 80px; }
+    th.amtcol,  td.amtcol { padding-left:  80px; }
+
+    @media (max-width: 520px){
+      col.pad, col.pad2{ width: 8%; }
+      col.chem, col.amt{ width: 42%; }
+      th.chemcol, td.chemcol{ padding-right: 14px; }
+      th.amtcol,  td.amtcol { padding-left:  14px; }
+    }
+
+    /* 链接：取消虚线/下划线，hover 变色发光 */
+    .chem a{
+      display: inline-block;
+      color: rgba(231,238,255,0.92);
+      text-decoration: none;
+      border-bottom: none;
+      padding: 2px 6px;
+      border-radius: 10px;
+      transition: color .12s ease, background .12s ease, text-shadow .12s ease;
+    }
+    .chem a:hover{
+      color: rgba(68,215,255,0.95);
+      background: rgba(68,215,255,0.07);
+      text-shadow: 0 0 14px rgba(68,215,255,0.18);
+    }
+
+    .amt{
+      white-space: nowrap;
+      color: rgba(231,238,255,0.82);
+      font-variant-numeric: tabular-nums;
+      display: inline-block;
+    }
+
+    /* 化学下标 */
+    sub{
+      font-size: 0.78em;
+      line-height: 0;
+      vertical-align: -0.35em;
+    }
+
+    /* ===== 下方：可折叠详情列表（右侧霓虹 + 号） ===== */
+    .details{
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    details.detail{
+      border: 1px solid rgba(106,167,255,0.18);
+      border-radius: var(--radius2);
+      background: rgba(255,255,255,0.035);
+      box-shadow: 0 0 14px rgba(106,167,255,0.14);
+      overflow: hidden;
+      scroll-margin-top: 16px;
+    }
+
+    details.detail[open]{
+      border-color: rgba(68,215,255,0.24);
+      background: rgba(255,255,255,0.05);
+      box-shadow: 0 0 18px rgba(106,167,255,0.20), 0 0 38px rgba(68,215,255,0.10);
+    }
+
+    summary.detail-title{
+      list-style: none;
+      cursor: pointer;
+      padding: 14px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+      color: rgba(231,238,255,0.92);
+      font-size: 15px;
+      letter-spacing: 0.8px;
+      background: linear-gradient(180deg, rgba(106,167,255,0.07), transparent);
+      min-height: 52px;
+    }
+    summary.detail-title::-webkit-details-marker{ display:none; }
+
+    /* 美观、居中的“+ / −”圆形霓虹按钮 */
+    summary.detail-title::after{
+      content:"";
+      width: 30px;
+      height: 30px;
+      flex: 0 0 auto;
+      align-self: center;
+      border-radius: 999px;
+      border: 1px solid rgba(68,215,255,0.30);
+      box-shadow: 0 0 14px rgba(68,215,255,0.14), 0 0 18px rgba(106,167,255,0.16);
+      background:
+        linear-gradient(rgba(68,215,255,0.95), rgba(68,215,255,0.95)) center/12px 2px no-repeat,
+        linear-gradient(rgba(68,215,255,0.95), rgba(68,215,255,0.95)) center/2px 12px no-repeat,
+        rgba(106,167,255,0.07);
+    }
+    details.detail[open] summary.detail-title::after{
+      border-color: rgba(68,215,255,0.40);
+      background:
+        linear-gradient(rgba(68,215,255,0.95), rgba(68,215,255,0.95)) center/12px 2px no-repeat,
+        rgba(106,167,255,0.10);
+    }
+
+    .detail-body{
+      padding: 0 14px 14px;
+      color: rgba(231,238,255,0.76);
+      line-height: 1.8;
+      font-size: 14px;
+    }
+
+    .note{
+      margin: 10px 0 0;
+      color: rgba(231,238,255,0.62);
+      font-size: 13px;
+    }
+
+    /* 信息网格 */
+    .kvgrid{
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 8px 12px;
+      padding: 10px 12px;
+      border: 1px solid rgba(106,167,255,0.14);
+      background: rgba(255,255,255,0.03);
+      border-radius: 12px;
+      margin-top: 10px;
+    }
+    .k{
+      color: rgba(231,238,255,0.70);
+      letter-spacing: .6px;
+      font-size: 13px;
+    }
+    .v{
+      color: rgba(231,238,255,0.90);
+      font-variant-numeric: tabular-nums;
+    }
+    .tag{
+      display:inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(68,215,255,0.22);
+      background: rgba(68,215,255,0.06);
+      color: rgba(231,238,255,0.86);
+      font-size: 12px;
+      margin-right: 6px;
+      margin-top: 4px;
+    }
+
+    .backtop{
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 13px;
+      color: rgba(231,238,255,0.78);
+      text-decoration: none;
+      border: 1px solid rgba(106,167,255,0.20);
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(106,167,255,0.05);
+      box-shadow: 0 0 12px rgba(106,167,255,0.12);
+    }
+    .backtop:hover{
+      background: rgba(106,167,255,0.10);
+      box-shadow: var(--glow);
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{ scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap" id="top">
+    <div class="topbar">
+      <div>pvsk.online</div>
+      <a href="page2.html">返回菜单</a>
+    </div>
+
+    <h1>原料检测</h1>
+    <p class="subtitle">点击表格左侧药品名称会跳到下方对应条目，并自动展开。</p>
+
+    <div class="panel">
+      <div class="table-wrap">
+        <table>
+          <colgroup>
+            <col class="pad">
+            <col class="chem">
+            <col class="amt">
+            <col class="pad2">
+          </colgroup>
+
+          <caption>
+            配置1 mL的2 mol/L的
+            <span class="subify">Cs_0.2FA_0.8Pb_0.5Sn_0.5I_3</span>
+            钙钛矿前驱体溶液需要以下化学药品：
+          </caption>
+
+          <thead>
+            <tr>
+              <th class="padcol" aria-hidden="true"></th>
+              <th class="chemcol">化学药品（点击查看详情）</th>
+              <th class="amtcol">用量</th>
+              <th class="padcol" aria-hidden="true"></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td class="padcol" aria-hidden="true"></td>
+              <td class="chem chemcol"><a href="#mascn"><span class="subify">MASCN</span></a></td>
+              <td class="amtcol"><span class="amt">1.8 mg</span></td>
+              <td class="padcol" aria-hidden="true"></td>
+            </tr>
+            <tr>
+              <td class="padcol" aria-hidden="true"></td>
+              <td class="chem chemcol"><a href="#glyhcl"><span class="subify">GlyHCl</span></a></td>
+              <td class="amtcol"><span class="amt">3.3 mg</span></td>
+              <td class="padcol" aria-hidden="true"></td>
+            </tr>
+            <tr>
+              <td class="padcol" aria-hidden="true"></td>
+              <td class="chem chemcol"><a href="#snf2"><span class="subify">SnF_2</span></a></td>
+              <td class="amtcol"><span class="amt">15.7 mg</span></td>
+              <td class="padcol" aria-hidden="true"></td>
+            </tr>
+            <tr>
+              <td class="padcol" aria-hidden="true"></td>
+              <td class="chem chemcol"><a href="#sn"><span class="subify">Sn</span></a></td>
+              <td class="amtcol"><span class="amt">5 mg</span></td>
+              <td class="padcol" aria-hidden="true"></td>
+            </tr>
+            <tr>
+              <td class="padcol" aria-hidden="true"></td>
+              <td class="chem chemcol"><a href="#csi"><span class="subify">CsI</span></a></td>
+              <td class="amtcol"><span class="amt">103.92 mg</span></td>
+              <td class="padcol" aria-hidden="true"></td>
+            </tr>
+            <tr>
+              <td class="padcol" aria-hidden="true"></td>
+              <td class="chem chemcol"><a href="#fai"><span class="subify">FAI</span></a></td>
+              <td class="amtcol"><span class="amt">275.15 mg</span></td>
+              <td class="padcol" aria-hidden="true"></td>
+            </tr>
+            <tr>
+              <td class="padcol" aria-hidden="true"></td>
+              <td class="chem chemcol"><a href="#sni2"><span class="subify">SnI_2</span></a></td>
+              <td class="amtcol"><span class="amt">372.52 mg</span></td>
+              <td class="padcol" aria-hidden="true"></td>
+            </tr>
+            <tr>
+              <td class="padcol" aria-hidden="true"></td>
+              <td class="chem chemcol"><a href="#pbi2"><span class="subify">PbI_2</span></a></td>
+              <td class="amtcol"><span class="amt">461.01 mg</span></td>
+              <td class="padcol" aria-hidden="true"></td>
+            </tr>
+            <tr>
+              <td class="padcol" aria-hidden="true"></td>
+              <td class="chem chemcol"><a href="#dmf"><span class="subify">DMF</span></a></td>
+              <td class="amtcol"><span class="amt">750 &micro;L</span></td>
+              <td class="padcol" aria-hidden="true"></td>
+            </tr>
+            <tr>
+              <td class="padcol" aria-hidden="true"></td>
+              <td class="chem chemcol"><a href="#dmso"><span class="subify">DMSO</span></a></td>
+              <td class="amtcol"><span class="amt">250 &micro;L</span></td>
+              <td class="padcol" aria-hidden="true"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 详细信息：可展开/收起 -->
+    <div class="details">
+
+      <details class="detail" id="mascn">
+        <summary class="detail-title"><span class="subify">MASCN</span></summary>
+        <div class="detail-body">
+          <div class="kvgrid">
+            <div class="k">CAS</div><div class="v">61540-63-4</div>
+            <div class="k">外观/颜色</div><div class="v">白色~类白色固体（粉末/晶体）</div>
+            <div class="k">主要性质</div><div class="v">易吸湿；建议密封、干燥、避光保存</div>
+            <div class="k">溶解性</div><div class="v">极性溶剂中通常可溶（以SDS与实际配方为准）</div>
+            <div class="k">储存建议</div><div class="v"><span class="tag">干燥</span><span class="tag">避光</span><span class="tag">密封</span></div>
+            <div class="k">注意事项</div><div class="v">使用前确认批次/含水；操作时佩戴手套与护目镜；以SDS为准</div>
+          </div>
+          <p class="note">记录建议：供应商/货号、批次、开封日期、称量环境（RH/手套箱）、含水控制方式。</p>
+          <a class="backtop" href="#top">返回表格顶部</a>
+        </div>
+      </details>
+
+      <details class="detail" id="glyhcl">
+        <summary class="detail-title"><span class="subify">GlyHCl</span></summary>
+        <div class="detail-body">
+          <div class="kvgrid">
+            <div class="k">CAS</div><div class="v">6000-43-7</div>
+            <div class="k">外观/颜色</div><div class="v">白色结晶性粉末</div>
+            <div class="k">主要性质</div><div class="v">氨基酸盐；一般较稳定；注意吸湿与结块</div>
+            <div class="k">溶解性</div><div class="v">水中易溶；在有机溶剂中溶解性有限（以SDS为准）</div>
+            <div class="k">储存建议</div><div class="v"><span class="tag">干燥</span><span class="tag">密封</span></div>
+            <div class="k">注意事项</div><div class="v">避免吸潮；称量后及时封口；以SDS为准</div>
+          </div>
+          <a class="backtop" href="#top">返回表格顶部</a>
+        </div>
+      </details>
+
+      <details class="detail" id="snf2">
+        <summary class="detail-title"><span class="subify">SnF_2</span></summary>
+        <div class="detail-body">
+          <div class="kvgrid">
+            <div class="k">CAS</div><div class="v">7783-47-3</div>
+            <div class="k">外观/颜色</div><div class="v">白色~类白色固体（粉末）</div>
+            <div class="k">主要性质</div><div class="v">对水/氧较敏感；建议干燥、惰性气氛或快速操作</div>
+            <div class="k">溶解性</div><div class="v">在水中可溶（溶解度随温度变化）；有机溶剂表现依配方而定</div>
+            <div class="k">储存建议</div><div class="v"><span class="tag">干燥</span><span class="tag">密封</span><span class="tag">避潮</span></div>
+            <div class="k">注意事项</div><div class="v">优先在手套箱/干燥环境称量；避免长时间暴露空气；以SDS为准</div>
+          </div>
+          <a class="backtop" href="#top">返回表格顶部</a>
+        </div>
+      </details>
+
+      <details class="detail" id="sn">
+        <summary class="detail-title"><span class="subify">Sn</span></summary>
+        <div class="detail-body">
+          <div class="kvgrid">
+            <div class="k">CAS</div><div class="v">7440-31-5</div>
+            <div class="k">外观/颜色</div><div class="v">银白色金属（粉末/颗粒/片材视规格）</div>
+            <div class="k">主要性质</div><div class="v">空气中表面可缓慢氧化；粉末形态更易氧化</div>
+            <div class="k">溶解性</div><div class="v">金属锡不溶于水；与部分酸/强氧化条件反应（以SDS为准）</div>
+            <div class="k">储存建议</div><div class="v"><span class="tag">干燥</span><span class="tag">密封</span></div>
+            <div class="k">注意事项</div><div class="v">若为粉末，避免扬尘；记录粒径/形态；以SDS为准</div>
+          </div>
+          <a class="backtop" href="#top">返回表格顶部</a>
+        </div>
+      </details>
+
+      <details class="detail" id="csi">
+        <summary class="detail-title"><span class="subify">CsI</span></summary>
+        <div class="detail-body">
+          <div class="kvgrid">
+            <div class="k">CAS</div><div class="v">7789-17-5</div>
+            <div class="k">外观/颜色</div><div class="v">白色粉末/晶体</div>
+            <div class="k">主要性质</div><div class="v">卤化物盐；常见为吸湿性材料，注意含水控制</div>
+            <div class="k">溶解性</div><div class="v">水中可溶；在极性溶剂中表现依体系而定</div>
+            <div class="k">储存建议</div><div class="v"><span class="tag">干燥</span><span class="tag">密封</span><span class="tag">避光</span></div>
+            <div class="k">注意事项</div><div class="v">建议称量后快速封口；记录含水与预干燥条件（如有）</div>
+          </div>
+          <a class="backtop" href="#top">返回表格顶部</a>
+        </div>
+      </details>
+
+      <details class="detail" id="fai">
+        <summary class="detail-title"><span class="subify">FAI</span></summary>
+        <div class="detail-body">
+          <div class="kvgrid">
+            <div class="k">CAS</div><div class="v">879643-71-7</div>
+            <div class="k">外观/颜色</div><div class="v">白色~类白色粉末</div>
+            <div class="k">主要性质</div><div class="v">常见为吸湿性；建议避光、干燥密封保存</div>
+            <div class="k">溶解性</div><div class="v">极性溶剂中通常可溶（以SDS与实际体系为准）</div>
+            <div class="k">储存建议</div><div class="v"><span class="tag">干燥</span><span class="tag">避光</span><span class="tag">密封</span></div>
+            <div class="k">注意事项</div><div class="v">建议记录开封日期、含水控制、称量环境（手套箱/干燥箱）</div>
+          </div>
+          <a class="backtop" href="#top">返回表格顶部</a>
+        </div>
+      </details>
+
+      <details class="detail" id="sni2">
+        <summary class="detail-title"><span class="subify">SnI_2</span></summary>
+        <div class="detail-body">
+          <div class="kvgrid">
+            <div class="k">CAS</div><div class="v">10294-70-9</div>
+            <div class="k">外观/颜色</div><div class="v">浅红/黄/红色粉末或晶体（批次可能有差异）</div>
+            <div class="k">主要性质</div><div class="v">易受氧/湿影响；对前驱体体系质量敏感</div>
+            <div class="k">溶解性</div><div class="v">在部分极性配位溶剂体系中可分散/溶解（以配方为准）</div>
+            <div class="k">储存建议</div><div class="v"><span class="tag">干燥</span><span class="tag">避光</span><span class="tag">惰性气氛优先</span></div>
+            <div class="k">注意事项</div><div class="v">建议在手套箱称量；记录颜色变化/结块情况；以SDS为准</div>
+          </div>
+          <a class="backtop" href="#top">返回表格顶部</a>
+        </div>
+      </details>
+
+      <details class="detail" id="pbi2">
+        <summary class="detail-title"><span class="subify">PbI_2</span></summary>
+        <div class="detail-body">
+          <div class="kvgrid">
+            <div class="k">CAS</div><div class="v">10101-63-0</div>
+            <div class="k">外观/颜色</div><div class="v">亮黄色晶体/粉末</div>
+            <div class="k">主要性质</div><div class="v">含铅化合物；需严格个人防护与废弃物管理</div>
+            <div class="k">溶解性</div><div class="v">水中溶解度较低；在特定配位溶剂体系中可溶/可分散</div>
+            <div class="k">储存建议</div><div class="v"><span class="tag">密封</span><span class="tag">干燥</span><span class="tag">避光</span></div>
+            <div class="k">注意事项</div><div class="v">手套/口罩/护目镜；含铅废液与固废分类收集；以SDS为准</div>
+          </div>
+          <a class="backtop" href="#top">返回表格顶部</a>
+        </div>
+      </details>
+
+      <details class="detail" id="dmf">
+        <summary class="detail-title"><span class="subify">DMF</span></summary>
+        <div class="detail-body">
+          <div class="kvgrid">
+            <div class="k">CAS</div><div class="v">68-12-2</div>
+            <div class="k">外观/颜色</div><div class="v">无色透明液体（有轻微气味）</div>
+            <div class="k">主要性质</div><div class="v">极性非质子溶剂；可吸水；建议关注含水量</div>
+            <div class="k">溶解性</div><div class="v">与水及多种有机溶剂互溶</div>
+            <div class="k">储存建议</div><div class="v"><span class="tag">密封</span><span class="tag">干燥</span><span class="tag">避热</span></div>
+            <div class="k">注意事项</div><div class="v">建议通风橱操作；避免皮肤接触与吸入；参考SDS与实验室规范</div>
+          </div>
+          <a class="backtop" href="#top">返回表格顶部</a>
+        </div>
+      </details>
+
+      <details class="detail" id="dmso">
+        <summary class="detail-title"><span class="subify">DMSO</span></summary>
+        <div class="detail-body">
+          <div class="kvgrid">
+            <div class="k">CAS</div><div class="v">67-68-5</div>
+            <div class="k">外观/颜色</div><div class="v">无色透明液体（低温可能凝固）</div>
+            <div class="k">主要性质</div><div class="v">强极性溶剂；吸湿；可增强皮肤渗透（需注意防护）</div>
+            <div class="k">溶解性</div><div class="v">与水及多种有机溶剂互溶</div>
+            <div class="k">储存建议</div><div class="v"><span class="tag">密封</span><span class="tag">干燥</span><span class="tag">避光</span></div>
+            <div class="k">注意事项</div><div class="v">避免将污染物“带入皮肤”；佩戴合适手套；参考SDS</div>
+          </div>
+          <a class="backtop" href="#top">返回表格顶部</a>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <script>
+    // 1) 把“_数字(含小数)”自动渲染成下标：SnF_2 -> SnF<sub>2</sub>, Cs_0.2 -> Cs<sub>0.2</sub>
+    document.querySelectorAll(".subify").forEach(el => {
+      const t = el.textContent;
+      el.innerHTML = t.replace(/_([0-9]+(?:\.[0-9]+)?)/g, "<sub>$1</sub>");
+    });
+
+    // 2) 点击表格药品名：平滑滚动到详情，并自动展开
+    function openAndScrollTo(hash){
+      if (!hash || hash === "#") return;
+      const el = document.querySelector(hash);
+      if (!el) return;
+
+      if (el.tagName && el.tagName.toLowerCase() === "details") {
+        el.open = true;
+      }
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      history.replaceState(null, "", hash);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener("click", (e) => {
+        const hash = a.getAttribute("href");
+        const target = document.querySelector(hash);
+        if (!target) return;
+        e.preventDefault();
+        openAndScrollTo(hash);
+      });
+    });
+
+    window.addEventListener("load", () => openAndScrollTo(location.hash));
+  </script>
+</body>
+</html>

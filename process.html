@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>工艺流程 | pvsk.online</title>
+  <style>
+    :root{
+      --bg:#05070d;
+      --text: rgba(231, 238, 255, 0.92);
+      --muted: rgba(231, 238, 255, 0.66);
+
+      --neon:#6aa7ff;
+      --neon2:#44d7ff;
+
+      --panel: rgba(255,255,255,0.045);
+      --border: rgba(106,167,255,0.22);
+
+      --glow: 0 0 16px rgba(106,167,255,0.22), 0 0 30px rgba(68,215,255,0.10);
+      --glow-strong: 0 0 18px rgba(106,167,255,0.38), 0 0 42px rgba(68,215,255,0.18);
+
+      --radius: 18px;
+    }
+
+    html,body{margin:0;min-height:100%;}
+    body{
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC",
+                   "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      background: var(--bg);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* 冷蓝科幻背景 */
+    body::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(980px 560px at 70% 18%, rgba(106,167,255,0.22), transparent 60%),
+        radial-gradient(760px 520px at 22% 78%, rgba(68,215,255,0.14), transparent 62%),
+        radial-gradient(560px 420px at 10% 20%, rgba(43,91,255,0.12), transparent 58%),
+        linear-gradient(180deg, rgba(255,255,255,0.06), transparent 45%);
+      pointer-events:none;
+      filter: saturate(1.05);
+    }
+    body::after{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.07) 0 1px, transparent 1px 40px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 62px);
+      opacity: 0.09;
+      pointer-events:none;
+    }
+
+    .wrap{
+      position: relative;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 22px 16px 56px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:14px;
+      color: var(--muted);
+    }
+    .topbar a{
+      color: var(--text);
+      text-decoration:none;
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(106,167,255,0.06);
+      box-shadow: var(--glow);
+    }
+    .topbar a:hover{
+      background: rgba(106,167,255,0.11);
+      box-shadow: var(--glow-strong);
+    }
+
+    h1{
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-shadow: 0 0 18px rgba(106,167,255,0.25);
+    }
+    .subtitle{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .panel{
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--panel);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--glow);
+      padding: 18px 14px 22px;
+      overflow: hidden;
+    }
+
+    /* ===== 横向流程线 ===== */
+    .timeline{
+      position: relative;
+      width: 100%;
+      padding: 18px 6px 10px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .steps{
+      position: relative;
+      display: flex;
+      gap: 22px;
+      justify-content: space-between;
+      min-width: 980px;               /* ✅ 增加一步后加宽 */
+      padding: 24px 10px 0;
+    }
+
+    /* 横线 */
+    .steps::before{
+      content:"";
+      position:absolute;
+      left: 12px;
+      right: 12px;
+      top: 20px;
+      height: 6px;
+      border-radius: 999px;
+      background: linear-gradient(90deg,
+        rgba(68,215,255,0.05),
+        rgba(68,215,255,0.22),
+        rgba(106,167,255,0.22),
+        rgba(68,215,255,0.22),
+        rgba(68,215,255,0.05)
+      );
+      box-shadow: 0 0 16px rgba(68,215,255,0.12);
+    }
+
+    .step{
+      position: relative;
+      flex: 1 1 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .dot{
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(68,215,255,0.18);
+      border: 2px solid rgba(68,215,255,0.55);
+      box-shadow: 0 0 16px rgba(68,215,255,0.18), 0 0 22px rgba(106,167,255,0.12);
+      position: relative;
+      z-index: 2;
+    }
+
+    .vline{
+      width: 2px;
+      height: 34px;
+      background: linear-gradient(180deg, rgba(68,215,255,0.55), rgba(68,215,255,0.10));
+      box-shadow: 0 0 12px rgba(68,215,255,0.10);
+      border-radius: 999px;
+    }
+
+    .step a{
+      display: inline-block;
+      padding: 12px 18px;
+      border-radius: 14px;
+      text-decoration: none;
+      color: rgba(231,238,255,0.92);
+      border: 1px solid rgba(68,215,255,0.30);
+      background: rgba(255,255,255,0.03);
+      box-shadow: 0 0 14px rgba(106,167,255,0.12);
+      letter-spacing: 0.8px;
+      font-size: 14px;
+      white-space: nowrap;
+      transition: transform .14s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease, color .18s ease;
+    }
+    .step a:hover{
+      color: rgba(68,215,255,0.95);
+      border-color: rgba(68,215,255,0.55);
+      background: rgba(68,215,255,0.06);
+      box-shadow: var(--glow);
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 520px){
+      .steps{ min-width: 900px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div>pvsk.online</div>
+      <a href="page2.html">返回菜单</a>
+    </div>
+
+    <h1>工艺流程</h1>
+    <p class="subtitle">从左到右依次为关键步骤；点击按钮可进入对应页面。</p>
+
+    <div class="panel">
+      <div class="timeline">
+        <div class="steps">
+          <div class="step">
+            <div class="dot"></div>
+            <div class="vline"></div>
+            <a href="glass-clean.html">玻璃清洗</a>
+          </div>
+
+          <div class="step">
+            <div class="dot"></div>
+            <div class="vline"></div>
+            <a href="glass-dry.html">玻璃吹干</a>
+          </div>
+
+          <div class="step">
+            <div class="dot"></div>
+            <div class="vline"></div>
+            <a href="substrate-prep.html">基底制备</a>
+          </div>
+
+          <div class="step">
+            <div class="dot"></div>
+            <div class="vline"></div>
+            <a href="film-deposition.html">薄膜制备</a>
+          </div>
+
+          <div class="step">
+            <div class="dot"></div>
+            <div class="vline"></div>
+            <a href="film-passivation.html">薄膜钝化</a>
+          </div>
+
+          <!-- ✅ 新增：真空蒸镀 -->
+          <div class="step">
+            <div class="dot"></div>
+            <div class="vline"></div>
+            <a href="vacuum-evaporation.html">真空蒸镀</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
