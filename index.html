@@ -1,4 +1,4 @@
-<!doctype html>
+<!doctype html> 
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
@@ -11,7 +11,7 @@
     }
 
     body{
-      background-color: #000;   /* 视频未加载时的底色 */
+      background-color: #000;   /* 图片未加载时的底色 */
       min-height: 100vh;
       overflow: hidden;
       position: relative;
@@ -20,7 +20,7 @@
       color: #fff;
     }
 
-    /* ✅ 视频背景 */
+    /* ✅ 背景（由视频改为图片，样式不变） */
     .bg-video{
       position: absolute;
       inset: 0;
@@ -128,10 +128,8 @@
 </head>
 
 <body>
-  <!-- ✅ 背景视频：自动播放/静音/循环（移动端需要 muted 才能自动播放） -->
-  <video class="bg-video" autoplay muted loop playsinline preload="auto">
-    <source src="back.mp4" type="video/mp4">
-  </video>
+  <!-- ✅ 背景图片：替换掉 back.mp4 -->
+  <img class="bg-video" src="back.png" alt="background" loading="eager">
 
   <div class="overlay"></div>
 
