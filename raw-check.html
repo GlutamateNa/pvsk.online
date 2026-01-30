@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>原料检测 | pvsk.online</title>
   <style>
+     .imgbox{
+   margin-top: 12px;
+   text-align: center;     /* 居中 */
+ }
+
+ .imgbox img{
+   width: 100%;            /* 小屏自适应 */
+   max-width: 520px;       /* 统一大小：改这个数 */
+   height: auto;           /* 保持比例 */
+   display: inline-block;  /* 配合居中 */
+ }
+
     :root{
       --bg:#05070d;
       --text: rgba(231, 238, 255, 0.92);
@@ -360,7 +372,7 @@
           <caption>
             配置1 mL的2 mol/L的
             <span class="subify">Cs_0.2FA_0.8Pb_0.5Sn_0.5I_3</span>
-            钙钛矿前驱体溶液需要以下化学药品：
+            钙钛矿前驱体需要以下原料：
           </caption>
 
           <thead>
@@ -452,7 +464,7 @@
           </colgroup>
 
           <caption>
-            钝化剂1：配制1 mL的 1.5 mg/mL <span class="subify">p-FPEACl</span> 溶液（溶剂：甲苯：异丙醇 = 1：1）需要以下化学品：
+            钝化剂1：配制1 mL的 1.5 mg/mL <span class="subify">p-FPEACl</span> 需要以下化原料：
           </caption>
 
           <thead>
@@ -473,13 +485,13 @@
             </tr>
             <tr>
               <td class="padcol" aria-hidden="true"></td>
-              <td class="chem chemcol"><a href="#toluene"><span class="subify">甲苯</span></a></td>
+              <td class="chem chemcol"><a href="#toluene"><span class="subify">TL</span></a></td>
               <td class="amtcol"><span class="amt">500 &micro;L</span></td>
               <td class="padcol" aria-hidden="true"></td>
             </tr>
             <tr>
               <td class="padcol" aria-hidden="true"></td>
-              <td class="chem chemcol"><a href="#ipa"><span class="subify">异丙醇</span></a></td>
+              <td class="chem chemcol"><a href="#ipa"><span class="subify">IPA</span></a></td>
               <td class="amtcol"><span class="amt">500 &micro;L</span></td>
               <td class="padcol" aria-hidden="true"></td>
             </tr>
@@ -497,7 +509,7 @@
           </colgroup>
 
           <caption>
-            钝化剂2：配制1 mL的 0.5 mg/mL <span class="subify">EDADI</span> 溶液（溶剂：甲苯：异丙醇 = 1：1）需要以下化学品：
+            钝化剂2：配制1 mL的 0.5 mg/mL <span class="subify">EDAI_2</span> 需要以下原料：
           </caption>
 
           <thead>
@@ -518,13 +530,13 @@
             </tr>
             <tr>
               <td class="padcol" aria-hidden="true"></td>
-              <td class="chem chemcol"><a href="#toluene"><span class="subify">甲苯</span></a></td>
+              <td class="chem chemcol"><a href="#toluene"><span class="subify">TL</span></a></td>
               <td class="amtcol"><span class="amt">500 &micro;L</span></td>
               <td class="padcol" aria-hidden="true"></td>
             </tr>
             <tr>
               <td class="padcol" aria-hidden="true"></td>
-              <td class="chem chemcol"><a href="#ipa"><span class="subify">异丙醇</span></a></td>
+              <td class="chem chemcol"><a href="#ipa"><span class="subify">IPA</span></a></td>
               <td class="amtcol"><span class="amt">500 &micro;L</span></td>
               <td class="padcol" aria-hidden="true"></td>
             </tr>
@@ -543,13 +555,20 @@
         <div class="detail-body">
           <div class="kvgrid">
             <div class="k">CAS</div><div class="v">61540-63-4</div>
-            <div class="k">外观/颜色</div><div class="v">白色~类白色固体（粉末/晶体）</div>
-            <div class="k">主要性质</div><div class="v">易吸湿；建议密封、干燥、避光保存</div>
-            <div class="k">溶解性</div><div class="v">极性溶剂中通常可溶（以SDS与实际配方为准）</div>
+            <div class="k">名称</div><div class="v">硫氰酸甲胺</div>
+            <div class="k">外观/颜色</div><div class="v">白色小晶体</div>
+            <div class="k">主要性质</div><div class="v">易吸附</div>
+            <div class="k">溶解性</div><div class="v">极性溶剂中通常可溶</div>
             <div class="k">储存建议</div><div class="v"><span class="tag">干燥</span><span class="tag">避光</span><span class="tag">密封</span></div>
-            <div class="k">注意事项</div><div class="v">使用前确认批次/含水；操作时佩戴手套与护目镜；以SDS为准</div>
+            <div class="k">注意事项</div><div class="v">称量时注意不要粘壁</div>
+            <div class="k">电阻</div><div class="v">~1.9 MΩ(1 mg/mL in DMF)</div>
+            <div class="k">毛细管上升</div><div class="v">2.7 cm</div>
           </div>
-          <p class="note">记录建议：供应商/货号、批次、开封日期、称量环境（RH/手套箱）、含水控制方式。</p>
+         <div class="imgbox">
+          <img src="images/MASCN.png" alt="MASCN" loading="lazy">
+         </div> 
+
+          
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
       </details>
@@ -559,12 +578,18 @@
         <div class="detail-body">
           <div class="kvgrid">
             <div class="k">CAS</div><div class="v">6000-43-7</div>
-            <div class="k">外观/颜色</div><div class="v">白色结晶性粉末</div>
+            <div class="k">名称</div><div class="v">甘氨酸盐酸盐</div>
+            <div class="k">外观/颜色</div><div class="v">白色小晶粉</div>
             <div class="k">主要性质</div><div class="v">氨基酸盐；一般较稳定；注意吸湿与结块</div>
-            <div class="k">溶解性</div><div class="v">水中易溶；在有机溶剂中溶解性有限（以SDS为准）</div>
+            <div class="k">溶解性</div><div class="v">水中易溶；在有机溶剂中溶解性有限</div>
             <div class="k">储存建议</div><div class="v"><span class="tag">干燥</span><span class="tag">密封</span></div>
-            <div class="k">注意事项</div><div class="v">避免吸潮；称量后及时封口；以SDS为准</div>
+            <div class="k">注意事项</div><div class="v">称量时注意不要粘壁</div>
+            <div class="k">电阻</div><div class="v">~1 MΩ(1 mg/mL in DMF)</div>
+            <div class="k">毛细管上升</div><div class="v">3.2 cm</div>
           </div>
+         <div class="imgbox">
+          <img src="images/GlyHCl.png" alt="GlyHCl" loading="lazy">
+         </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
       </details>
@@ -574,11 +599,17 @@
         <div class="detail-body">
           <div class="kvgrid">
             <div class="k">CAS</div><div class="v">7783-47-3</div>
-            <div class="k">外观/颜色</div><div class="v">白色~类白色固体（粉末）</div>
-            <div class="k">主要性质</div><div class="v">对水/氧较敏感；建议干燥、惰性气氛或快速操作</div>
-            <div class="k">溶解性</div><div class="v">在水中可溶（溶解度随温度变化）；有机溶剂表现依配方而定</div>
+            <div class="k">名称</div><div class="v">氟化亚锡</div>
+            <div class="k">外观/颜色</div><div class="v">白色粉末</div>
+            <div class="k">主要性质</div><div class="v">晶粒小相互作用低</div>
+            <div class="k">溶解性</div><div class="v">在水中可溶；有机溶剂中可溶</div>
             <div class="k">储存建议</div><div class="v"><span class="tag">干燥</span><span class="tag">密封</span><span class="tag">避潮</span></div>
-            <div class="k">注意事项</div><div class="v">优先在手套箱/干燥环境称量；避免长时间暴露空气；以SDS为准</div>
+            <div class="k">注意事项</div><div class="v">暂无</div>
+            <div class="k">电阻</div><div class="v">~1.1 MΩ(10 mg/mL in DMF)</div>
+            <div class="k">毛细管上升</div><div class="v">3.4 cm</div>
+          </div>
+         <div class="imgbox">
+          <img src="images/SnF_2.png" alt="SnF_2" loading="lazy">
           </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
@@ -589,11 +620,17 @@
         <div class="detail-body">
           <div class="kvgrid">
             <div class="k">CAS</div><div class="v">7440-31-5</div>
-            <div class="k">外观/颜色</div><div class="v">银白色金属（粉末/颗粒/片材视规格）</div>
+            <div class="k">名称</div><div class="v">锡</div>
+            <div class="k">外观/颜色</div><div class="v">银白色金属粒/灰黑色粉末</div>
             <div class="k">主要性质</div><div class="v">空气中表面可缓慢氧化；粉末形态更易氧化</div>
-            <div class="k">溶解性</div><div class="v">金属锡不溶于水；与部分酸/强氧化条件反应（以SDS为准）</div>
+            <div class="k">溶解性</div><div class="v">金属锡不溶于水其他有机溶剂</div>
             <div class="k">储存建议</div><div class="v"><span class="tag">干燥</span><span class="tag">密封</span></div>
-            <div class="k">注意事项</div><div class="v">若为粉末，避免扬尘；记录粒径/形态；以SDS为准</div>
+            <div class="k">注意事项</div><div class="v">粉末密度很大，注意不要过量；锡粒加3-4粒</div>
+            <div class="k">电阻</div><div class="v">（？ Ω）</div>
+            <div class="k">毛细管上升</div><div class="v">（？ cm）</div>
+          </div>
+         <div class="imgbox">
+          <img src="images/Sn.png" alt="Sn" loading="lazy">
           </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
@@ -604,11 +641,17 @@
         <div class="detail-body">
           <div class="kvgrid">
             <div class="k">CAS</div><div class="v">7789-17-5</div>
-            <div class="k">外观/颜色</div><div class="v">白色粉末/晶体</div>
-            <div class="k">主要性质</div><div class="v">卤化物盐；常见为吸湿性材料，注意含水控制</div>
-            <div class="k">溶解性</div><div class="v">水中可溶；在极性溶剂中表现依体系而定</div>
+            <div class="k">名称</div><div class="v">碘化铯</div>
+            <div class="k">外观/颜色</div><div class="v">白色晶粒</div>
+            <div class="k">主要性质</div><div class="v">卤化物盐；常见为吸湿性材料</div>
+            <div class="k">溶解性</div><div class="v">水中可溶；极性溶剂中可溶</div>
             <div class="k">储存建议</div><div class="v"><span class="tag">干燥</span><span class="tag">密封</span><span class="tag">避光</span></div>
-            <div class="k">注意事项</div><div class="v">建议称量后快速封口；记录含水与预干燥条件（如有）</div>
+            <div class="k">注意事项</div><div class="v">暂无</div>
+            <div class="k">电阻</div><div class="v">150 kΩ(100 mg/mL in DMF)</div>
+            <div class="k">毛细管上升</div><div class="v">3.1 cm</div>
+          </div>
+         <div class="imgbox">
+          <img src="images/CsI.png" alt="CsI" loading="lazy">
           </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
@@ -619,11 +662,17 @@
         <div class="detail-body">
           <div class="kvgrid">
             <div class="k">CAS</div><div class="v">879643-71-7</div>
-            <div class="k">外观/颜色</div><div class="v">白色~类白色粉末</div>
+            <div class="k">名称</div><div class="v">碘化甲脒</div>
+            <div class="k">外观/颜色</div><div class="v">白色片状大晶体</div>
             <div class="k">主要性质</div><div class="v">常见为吸湿性；建议避光、干燥密封保存</div>
-            <div class="k">溶解性</div><div class="v">极性溶剂中通常可溶（以SDS与实际体系为准）</div>
+            <div class="k">溶解性</div><div class="v">极性溶剂中通常可溶</div>
             <div class="k">储存建议</div><div class="v"><span class="tag">干燥</span><span class="tag">避光</span><span class="tag">密封</span></div>
-            <div class="k">注意事项</div><div class="v">建议记录开封日期、含水控制、称量环境（手套箱/干燥箱）</div>
+            <div class="k">注意事项</div><div class="v">片状，称量时注意质量控制</div>
+            <div class="k">电阻</div><div class="v">190 kΩ(100 mg/mL in DMF)</div>
+            <div class="k">毛细管上升</div><div class="v">3.9 cm</div>
+          </div>
+         <div class="imgbox">
+          <img src="images/FAI.png" alt="FAI" loading="lazy">
           </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
@@ -634,11 +683,17 @@
         <div class="detail-body">
           <div class="kvgrid">
             <div class="k">CAS</div><div class="v">10294-70-9</div>
-            <div class="k">外观/颜色</div><div class="v">浅红/黄/红色粉末或晶体（批次可能有差异）</div>
+            <div class="k">名称</div><div class="v">碘化亚锡</div>
+            <div class="k">外观/颜色</div><div class="v">红色小晶体</div>
             <div class="k">主要性质</div><div class="v">易受氧/湿影响；对前驱体体系质量敏感</div>
-            <div class="k">溶解性</div><div class="v">在部分极性配位溶剂体系中可分散/溶解（以配方为准）</div>
+            <div class="k">溶解性</div><div class="v">水中不可溶；在部分极性配位溶剂体系中可分散/溶解（以配方为准）</div>
             <div class="k">储存建议</div><div class="v"><span class="tag">干燥</span><span class="tag">避光</span><span class="tag">惰性气氛优先</span></div>
             <div class="k">注意事项</div><div class="v">建议在手套箱称量；记录颜色变化/结块情况；以SDS为准</div>
+            <div class="k">电阻</div><div class="v">（？ Ω）</div>
+            <div class="k">毛细管上升</div><div class="v">（？ cm）</div>
+          </div>
+         <div class="imgbox">
+          <img src="images/SnI_2.png" alt="SnI_2" loading="lazy">
           </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
@@ -650,10 +705,16 @@
           <div class="kvgrid">
             <div class="k">CAS</div><div class="v">10101-63-0</div>
             <div class="k">外观/颜色</div><div class="v">亮黄色晶体/粉末</div>
-            <div class="k">主要性质</div><div class="v">含铅化合物；需严格个人防护与废弃物管理</div>
+            <div class="k">名称</div><div class="v">碘化铅</div>
+            <div class="k">主要性质</div><div class="v">含铅化合物；<b>有毒</b></div>
             <div class="k">溶解性</div><div class="v">水中溶解度较低；在特定配位溶剂体系中可溶/可分散</div>
             <div class="k">储存建议</div><div class="v"><span class="tag">密封</span><span class="tag">干燥</span><span class="tag">避光</span></div>
-            <div class="k">注意事项</div><div class="v">手套/口罩/护目镜；含铅废液与固废分类收集；以SDS为准</div>
+            <div class="k">注意事项</div><div class="v">手套/口罩/护目镜；含铅废液与固废分类收集</div>
+            <div class="k">电阻</div><div class="v">~121 kΩ）</div>
+            <div class="k">毛细管上升</div><div class="v">3.0 cm</div>
+          </div>
+         <div class="imgbox">
+          <img src="images/PbI_2.png" alt="PbI_2" loading="lazy">
           </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
@@ -664,11 +725,17 @@
         <div class="detail-body">
           <div class="kvgrid">
             <div class="k">CAS</div><div class="v">68-12-2</div>
+            <div class="k">名称</div><div class="v">N,N-二甲基甲酰胺</div>
             <div class="k">外观/颜色</div><div class="v">无色透明液体（有轻微气味）</div>
             <div class="k">主要性质</div><div class="v">极性非质子溶剂；可吸水；建议关注含水量</div>
             <div class="k">溶解性</div><div class="v">与水及多种有机溶剂互溶</div>
             <div class="k">储存建议</div><div class="v"><span class="tag">密封</span><span class="tag">干燥</span><span class="tag">避热</span></div>
             <div class="k">注意事项</div><div class="v">建议通风橱操作；避免皮肤接触与吸入；参考SDS与实验室规范</div>
+            <div class="k">电阻</div><div class="v">~11 MΩ</div>
+            <div class="k">毛细管上升</div><div class="v">（？ cm）</div>
+          </div>
+         <div class="imgbox">
+          <img src="images/DMF.png" alt="DMF" loading="lazy">
           </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
@@ -684,6 +751,11 @@
             <div class="k">溶解性</div><div class="v">与水及多种有机溶剂互溶</div>
             <div class="k">储存建议</div><div class="v"><span class="tag">密封</span><span class="tag">干燥</span><span class="tag">避光</span></div>
             <div class="k">注意事项</div><div class="v">避免将污染物“带入皮肤”；佩戴合适手套；参考SDS</div>
+            <div class="k">电阻</div><div class="v">~6 MΩ</div>
+            <div class="k">毛细管上升</div><div class="v">2.6 cm</div>
+          </div>
+         <div class="imgbox">
+          <img src="images/DMSO.png" alt="DMSO" loading="lazy">
           </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
@@ -696,32 +768,42 @@
         <div class="detail-body">
           <div class="kvgrid">
             <div class="k">CAS</div><div class="v">459-19-8</div>
-            <div class="k">名称</div><div class="v">4-Fluoro-phenethylammonium chloride（4FPEACl）</div>
+            <div class="k">名称</div><div class="v">对氟苯乙胺盐酸盐 / 4-Fluoro-phenethylammonium chloride / para-Fluoro-phenethylammonium chloride</div>
             <div class="k">分子式</div><div class="v"><span class="subify">C_8H_11ClFN</span></div>
-            <div class="k">外观/颜色</div><div class="v">白色/类白色固体（粉末/晶体，视批次）</div>
-            <div class="k">主要性质</div><div class="v">有机铵盐；可能吸湿；建议干燥、避光、密封保存</div>
-            <div class="k">溶解/配制提示</div><div class="v">在甲苯中溶解度可能较低；可先用异丙醇少量溶解/分散，再按 1:1 混合至目标体积</div>
+            <div class="k">外观/颜色</div><div class="v">白色片状小晶体</div>
+            <div class="k">主要性质</div><div class="v">可能吸湿；<b>晶片间静电吸附力很强易粘黏</b></div>
+            <div class="k">溶解/配制提示</div><div class="v">在甲苯中溶解度低；需要用异丙醇溶解分散，再按 1:1 与甲苯混合</div>
             <div class="k">储存建议</div><div class="v"><span class="tag">干燥</span><span class="tag">避光</span><span class="tag">密封</span></div>
             <div class="k">注意事项</div><div class="v">操作佩戴手套/护目镜；避免吸入粉尘；以SDS与实验室规范为准</div>
+            <div class="k">电阻</div><div class="v">~1.5 MΩ(1 mg/mL in DMF)</div>
+            <div class="k">毛细管上升</div><div class="v">3.6 cm</div>
+          </div>
+         <div class="imgbox">
+          <img src="images/p-FPEACl.png" alt="p-FPEACl" loading="lazy">
           </div>
           <p class="note">对应配方：1.5 mg/mL（1 mL 需 1.5 mg），溶剂为甲苯：异丙醇 = 1：1。</p>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
       </details>
 
-      <!-- 新增：EDADI（钝化剂2） -->
+      <!-- 新增：EDAI_2（钝化剂2） -->
       <details class="detail" id="edadi">
-        <summary class="detail-title"><span class="subify">EDADI</span></summary>
+        <summary class="detail-title"><span class="subify">EDAI_2</span></summary>
         <div class="detail-body">
           <div class="kvgrid">
             <div class="k">CAS</div><div class="v">5700-49-2</div>
-            <div class="k">名称</div><div class="v">Ethane-1,2-diammonium iodide（常见缩写 EDAI；此处按EDADI记录）</div>
+            <div class="k">名称</div><div class="v">乙二胺二氢碘酸盐 ； Ethane-1,2-diammonium iodide</div>
             <div class="k">分子式</div><div class="v"><span class="subify">C_2H_10I_2N_2</span></div>
-            <div class="k">外观/颜色</div><div class="v">无色~浅黄色晶体/粉末（视批次）</div>
+            <div class="k">外观/颜色</div><div class="v">无色/浅黄色小晶体/粉末（视批次）</div>
             <div class="k">主要性质</div><div class="v">二铵盐；易吸湿；对水/氧/湿较敏感时建议在干燥环境操作</div>
-            <div class="k">溶解/配制提示</div><div class="v">在甲苯中溶解度低；可先用异丙醇溶解/分散，再按 1:1 与甲苯混合</div>
+            <div class="k">溶解/配制提示</div><div class="v">在甲苯中溶解度低；需要用异丙醇溶解分散，再按 1:1 与甲苯混合</div>
             <div class="k">储存建议</div><div class="v"><span class="tag">干燥</span><span class="tag">密封</span><span class="tag">避潮</span></div>
             <div class="k">注意事项</div><div class="v">避免吸入粉尘；佩戴手套/护目镜；以SDS与实验室规范为准</div>
+            <div class="k">电阻</div><div class="v">（？ Ω）</div>
+            <div class="k">毛细管上升</div><div class="v">（？ cm）</div>
+          </div>
+         <div class="imgbox">
+          <img src="images/EDAI_2.png" alt="EDAI_2" loading="lazy">
           </div>
           <p class="note">对应配方：0.5 mg/mL（1 mL 需 0.5 mg），溶剂为甲苯：异丙醇 = 1：1。</p>
           <a class="backtop" href="#top">返回表格顶部</a>
@@ -730,17 +812,22 @@
 
       <!-- 新增：甲苯 -->
       <details class="detail" id="toluene">
-        <summary class="detail-title"><span class="subify">甲苯</span></summary>
+        <summary class="detail-title"><span class="subify">TL</span></summary>
         <div class="detail-body">
           <div class="kvgrid">
             <div class="k">CAS</div><div class="v">108-88-3</div>
-            <div class="k">英文名</div><div class="v">Toluene</div>
+            <div class="k">名称</div><div class="v">甲苯 / Toluene</div>
             <div class="k">分子式</div><div class="v"><span class="subify">C_7H_8</span></div>
-            <div class="k">外观/颜色</div><div class="v">无色透明液体（芳香气味）</div>
-            <div class="k">主要性质</div><div class="v">有机溶剂；易挥发；<b>易燃</b></div>
+            <div class="k">外观/颜色</div><div class="v">无色透明液体</div>
+            <div class="k">主要性质</div><div class="v">有机溶剂；易挥发；有刺激性气味；<b>易燃</b></div>
             <div class="k">溶解性</div><div class="v">与多数有机溶剂互溶；与水不互溶</div>
             <div class="k">储存建议</div><div class="v"><span class="tag">密闭</span><span class="tag">远离火源</span><span class="tag">通风</span></div>
-            <div class="k">注意事项</div><div class="v">建议通风橱操作；避免吸入蒸气；远离火花/明火；以SDS与实验室规范为准</div>
+            <div class="k">注意事项</div><div class="v">建议通风橱操作；避免吸入蒸气；远离火花/明火；以SDS与实验室规范为准;<b>易制毒，采购需报备</b></div>
+            <div class="k">电阻</div><div class="v">＞20 MΩ</div>
+            <div class="k">毛细管上升</div><div class="v">（？ cm）</div>
+          </div>
+         <div class="imgbox">
+          <img src="images/TL.png" alt="TL" loading="lazy">
           </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
@@ -748,17 +835,21 @@
 
       <!-- 新增：异丙醇 -->
       <details class="detail" id="ipa">
-        <summary class="detail-title"><span class="subify">异丙醇</span></summary>
+        <summary class="detail-title"><span class="subify">IPA</span></summary>
         <div class="detail-body">
           <div class="kvgrid">
             <div class="k">CAS</div><div class="v">67-63-0</div>
-            <div class="k">英文名</div><div class="v">Isopropanol / IPA</div>
+            <div class="k">名称</div><div class="v">异丙醇 / Isopropanol</div>
             <div class="k">分子式</div><div class="v"><span class="subify">C_3H_8O</span></div>
             <div class="k">外观/颜色</div><div class="v">无色透明液体</div>
-            <div class="k">主要性质</div><div class="v">有机溶剂；易挥发；<b>易燃</b></div>
+            <div class="k">主要性质</div><div class="v">有机溶剂；易挥发；有明显气味；<b>易燃</b></div>
             <div class="k">溶解性</div><div class="v">与水互溶；与多数有机溶剂互溶</div>
             <div class="k">储存建议</div><div class="v"><span class="tag">密闭</span><span class="tag">远离火源</span><span class="tag">通风</span></div>
-            <div class="k">注意事项</div><div class="v">建议通风橱操作；避免吸入蒸气；远离火花/明火；以SDS与实验室规范为准</div>
+            <div class="k">电阻</div><div class="v">＞20 MΩ</div>
+            <div class="k">毛细管上升</div><div class="v">2.4 cm</div>
+          </div>
+         <div class="imgbox">
+          <img src="images/IPA.png" alt="IPA" loading="lazy">
           </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
