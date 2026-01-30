@@ -20,7 +20,18 @@
       color: #fff;
     }
 
-    /* ✅ 视频背景 */
+    /* ✅ 海报图：先显示，避免黑屏 */
+    .bg-poster{
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;     /* 铺满屏幕，不留白边 */
+      object-position: center;
+      z-index: 0;
+    }
+
+    /* ✅ 视频背景：加载后淡入 */
     .bg-video{
       position: absolute;
       inset: 0;
@@ -29,6 +40,12 @@
       object-fit: cover;     /* 铺满屏幕，不留白边 */
       object-position: center;
       z-index: 0;
+
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    .bg-video.is-ready{
+      opacity: 1;
     }
 
     /* 轻微遮罩：让白字更清晰 */
@@ -128,7 +145,10 @@
 </head>
 
 <body>
-  <!-- ✅ 背景视频：恢复 back.mp4（其余不改） -->
+  <!-- ✅ 先显示 back.png（避免黑屏） -->
+  <img class="bg-poster" src="back.png" alt="background" loading="eager">
+
+  <!-- ✅ 背景视频：加载好后淡入 -->
   <video class="bg-video" autoplay muted loop playsinline preload="auto">
     <source src="back.mp4" type="video/mp4">
   </video>
@@ -147,5 +167,15 @@
       <a href="mailto:1744996809@qq.com">1744996809@qq.com</a>
     </div>
   </div>
+
+  <script>
+    const v = document.querySelector('.bg-video');
+    function showVideo(){ v.classList.add('is-ready'); }
+
+    if (v.readyState >= 2) showVideo();
+    v.addEventListener('loadeddata', showVideo, { once: true });
+    v.addEventListener('canplay', showVideo, { once: true });
+    v.addEventListener('playing', showVideo, { once: true });
+  </script>
 </body>
 </html>
