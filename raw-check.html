@@ -6,16 +6,15 @@
   <title>原料检测 | pvsk.online</title>
   <style>
      .imgbox{
-   margin-top: 12px;
-   text-align: center;     /* 居中 */
- }
-
- .imgbox img{
-   width: 100%;            /* 小屏自适应 */
-   max-width: 520px;       /* 统一大小：改这个数 */
-   height: auto;           /* 保持比例 */
-   display: inline-block;  /* 配合居中 */
- }
+       margin-top: 12px;
+       text-align: center;     /* 居中 */
+     }
+     .imgbox img{
+       width: 100%;            /* 小屏自适应 */
+       max-width: 520px;       /* 统一大小：改这个数 */
+       height: auto;           /* 保持比例 */
+       display: inline-block;  /* 配合居中 */
+     }
 
     :root{
       --bg:#05070d;
@@ -119,6 +118,24 @@
       backdrop-filter: blur(10px);
       box-shadow: var(--glow);
       overflow: hidden;
+    }
+
+    /* ✅ 新增：配方折叠（不破坏你原来的表格样式） */
+    details.recipe{
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--panel);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--glow);
+      overflow: hidden;
+    }
+    details.recipe[open]{ box-shadow: var(--glow-strong); }
+    /* 让“打开时变成减号”也生效 */
+    details.recipe[open] summary.detail-title::after{
+      border-color: rgba(68,215,255,0.40);
+      background:
+        linear-gradient(rgba(68,215,255,0.95), rgba(68,215,255,0.95)) center/12px 2px no-repeat,
+        rgba(106,167,255,0.10);
     }
 
     /* 表格区域 */
@@ -359,7 +376,9 @@
     <h1>原料检测</h1>
     <p class="subtitle">点击表格左侧药品名称会跳到下方对应条目，并自动展开。</p>
 
-    <div class="panel">
+    <!-- ✅ 前驱体配方：加折叠（默认展开，不改变你原先“打开就看到”的体验） -->
+    <details class="recipe" open>
+      <summary class="detail-title">前驱体溶液配方</summary>
       <div class="table-wrap">
         <table>
           <colgroup>
@@ -448,11 +467,12 @@
           </tbody>
         </table>
       </div>
-    </div>
+    </details>
 
 
-    <!-- 新增：钝化剂配方（点击药品跳转到下方条目，并自动展开） -->
-    <div class="panel">
+    <!-- ✅ 钝化剂配方：加折叠（默认展开） -->
+    <details class="recipe" open>
+      <summary class="detail-title">钝化剂配方</summary>
       <div class="table-wrap">
 
         <table>
@@ -544,11 +564,95 @@
         </table>
 
       </div>
-    </div>
+    </details>
+
+
+    <!-- ✅ 新增：基底溶液配方（PEDOT:PSS 母液用 IPA 1:5 稀释） -->
+    <details class="recipe" open>
+      <summary class="detail-title">基底溶液配方</summary>
+      <div class="table-wrap">
+        <table>
+          <colgroup>
+            <col class="pad">
+            <col class="chem">
+            <col class="amt">
+            <col class="pad2">
+          </colgroup>
+
+          <caption>
+            基底溶液：<span class="subify">PEDOT:PSS</span> 母液使用 <span class="subify">IPA</span> 按 1：5 稀释
+          </caption>
+
+          <thead>
+            <tr>
+              <th class="padcol" aria-hidden="true"></th>
+              <th class="chemcol">组分（点击查看详情）</th>
+              <th class="amtcol">比例（体积比）</th>
+              <th class="padcol" aria-hidden="true"></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td class="padcol" aria-hidden="true"></td>
+              <td class="chem chemcol"><a href="#pedotpss"><span class="subify">PEDOT:PSS</span></a></td>
+              <td class="amtcol"><span class="amt">1</span></td>
+              <td class="padcol" aria-hidden="true"></td>
+            </tr>
+            <tr>
+              <td class="padcol" aria-hidden="true"></td>
+              <td class="chem chemcol"><a href="#ipa"><span class="subify">IPA</span></a></td>
+              <td class="amtcol"><span class="amt">5</span></td>
+              <td class="padcol" aria-hidden="true"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+
+    <!-- ✅ 新增：反溶剂配方（纯氯苯） -->
+    <details class="recipe" open>
+      <summary class="detail-title">反溶剂配方</summary>
+      <div class="table-wrap">
+        <table>
+          <colgroup>
+            <col class="pad">
+            <col class="chem">
+            <col class="amt">
+            <col class="pad2">
+          </colgroup>
+
+          <caption>
+            反溶剂：纯氯苯（<span class="subify">CB</span>）
+          </caption>
+
+          <thead>
+            <tr>
+              <th class="padcol" aria-hidden="true"></th>
+              <th class="chemcol">溶剂（点击查看详情）</th>
+              <th class="amtcol">配方</th>
+              <th class="padcol" aria-hidden="true"></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td class="padcol" aria-hidden="true"></td>
+              <td class="chem chemcol"><a href="#cb"><span class="subify">CB</span></a></td>
+              <td class="amtcol"><span class="amt">纯溶剂</span></td>
+              <td class="padcol" aria-hidden="true"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
 
 
     <!-- 详细信息：可展开/收起 -->
     <div class="details">
+
+      <!-- 下面从这里起：你的物质卡片我保持原样（仅在末尾新增 PEDOT:PSS / CB 两张卡片） -->
 
       <details class="detail" id="mascn">
         <summary class="detail-title"><span class="subify">MASCN</span></summary>
@@ -564,11 +668,9 @@
             <div class="k">电阻</div><div class="v">~1.9 MΩ(1 mg/mL in DMF)</div>
             <div class="k">毛细管上升</div><div class="v">2.7 cm</div>
           </div>
-         <div class="imgbox">
-          <img src="images/MASCN.png" alt="MASCN" loading="lazy">
-         </div> 
-
-          
+          <div class="imgbox">
+            <img src="images/MASCN.png" alt="MASCN" loading="lazy">
+          </div> 
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
       </details>
@@ -587,9 +689,9 @@
             <div class="k">电阻</div><div class="v">~1 MΩ(1 mg/mL in DMF)</div>
             <div class="k">毛细管上升</div><div class="v">3.2 cm</div>
           </div>
-         <div class="imgbox">
-          <img src="images/GlyHCl.png" alt="GlyHCl" loading="lazy">
-         </div>
+          <div class="imgbox">
+            <img src="images/GlyHCl.png" alt="GlyHCl" loading="lazy">
+          </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
       </details>
@@ -608,8 +710,8 @@
             <div class="k">电阻</div><div class="v">~1.1 MΩ(10 mg/mL in DMF)</div>
             <div class="k">毛细管上升</div><div class="v">3.4 cm</div>
           </div>
-         <div class="imgbox">
-          <img src="images/SnF_2.png" alt="SnF_2" loading="lazy">
+          <div class="imgbox">
+            <img src="images/SnF_2.png" alt="SnF_2" loading="lazy">
           </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
@@ -629,8 +731,8 @@
             <div class="k">电阻</div><div class="v">（？ Ω）</div>
             <div class="k">毛细管上升</div><div class="v">（？ cm）</div>
           </div>
-         <div class="imgbox">
-          <img src="images/Sn.png" alt="Sn" loading="lazy">
+          <div class="imgbox">
+            <img src="images/Sn.png" alt="Sn" loading="lazy">
           </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
@@ -650,8 +752,8 @@
             <div class="k">电阻</div><div class="v">150 kΩ(100 mg/mL in DMF)</div>
             <div class="k">毛细管上升</div><div class="v">3.1 cm</div>
           </div>
-         <div class="imgbox">
-          <img src="images/CsI.png" alt="CsI" loading="lazy">
+          <div class="imgbox">
+            <img src="images/CsI.png" alt="CsI" loading="lazy">
           </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
@@ -671,8 +773,8 @@
             <div class="k">电阻</div><div class="v">190 kΩ(100 mg/mL in DMF)</div>
             <div class="k">毛细管上升</div><div class="v">3.9 cm</div>
           </div>
-         <div class="imgbox">
-          <img src="images/FAI.png" alt="FAI" loading="lazy">
+          <div class="imgbox">
+            <img src="images/FAI.png" alt="FAI" loading="lazy">
           </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
@@ -692,8 +794,8 @@
             <div class="k">电阻</div><div class="v">（？ Ω）</div>
             <div class="k">毛细管上升</div><div class="v">（？ cm）</div>
           </div>
-         <div class="imgbox">
-          <img src="images/SnI_2.png" alt="SnI_2" loading="lazy">
+          <div class="imgbox">
+            <img src="images/SnI_2.png" alt="SnI_2" loading="lazy">
           </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
@@ -713,8 +815,8 @@
             <div class="k">电阻</div><div class="v">~121 kΩ</div>
             <div class="k">毛细管上升</div><div class="v">3.0 cm</div>
           </div>
-         <div class="imgbox">
-          <img src="images/PbI_2.png" alt="PbI_2" loading="lazy">
+          <div class="imgbox">
+            <img src="images/PbI_2.png" alt="PbI_2" loading="lazy">
           </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
@@ -732,10 +834,10 @@
             <div class="k">储存建议</div><div class="v"><span class="tag">密封</span><span class="tag">干燥</span><span class="tag">避热</span></div>
             <div class="k">注意事项</div><div class="v">建议通风橱操作；避免皮肤接触与吸入；参考SDS与实验室规范</div>
             <div class="k">电阻</div><div class="v">~11 MΩ</div>
-            <div class="k">毛细管上升</div><div class="v">（？ cm）</div>
+            <div class="k">毛细管上升</div><div class="v">？ cm</div>
           </div>
-         <div class="imgbox">
-          <img src="images/DMF.png" alt="DMF" loading="lazy">
+          <div class="imgbox">
+            <img src="images/DMF.png" alt="DMF" loading="lazy">
           </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
@@ -755,15 +857,13 @@
             <div class="k">电阻</div><div class="v">~6 MΩ</div>
             <div class="k">毛细管上升</div><div class="v">2.6 cm</div>
           </div>
-         <div class="imgbox">
-          <img src="images/DMSO.png" alt="DMSO" loading="lazy">
+          <div class="imgbox">
+            <img src="images/DMSO.png" alt="DMSO" loading="lazy">
           </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
       </details>
 
-
-      <!-- 新增：p-FPEACl（钝化剂1） -->
       <details class="detail" id="pfpeacl">
         <summary class="detail-title"><span class="subify">p-FPEACl</span></summary>
         <div class="detail-body">
@@ -779,15 +879,14 @@
             <div class="k">电阻</div><div class="v">~1.5 MΩ(1 mg/mL in DMF)</div>
             <div class="k">毛细管上升</div><div class="v">3.6 cm</div>
           </div>
-         <div class="imgbox">
-          <img src="images/p-FPEACl.png" alt="p-FPEACl" loading="lazy">
+          <div class="imgbox">
+            <img src="images/p-FPEACl.png" alt="p-FPEACl" loading="lazy">
           </div>
           <p class="note">对应配方：1.5 mg/mL（1 mL 需 1.5 mg），溶剂为甲苯：异丙醇 = 1：1。</p>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
       </details>
 
-      <!-- 新增：EDAI_2（钝化剂2） -->
       <details class="detail" id="edadi">
         <summary class="detail-title"><span class="subify">EDAI_2</span></summary>
         <div class="detail-body">
@@ -803,15 +902,14 @@
             <div class="k">电阻</div><div class="v">（？ Ω）</div>
             <div class="k">毛细管上升</div><div class="v">（？ cm）</div>
           </div>
-         <div class="imgbox">
-          <img src="images/EDAI_2.png" alt="EDAI_2" loading="lazy">
+          <div class="imgbox">
+            <img src="images/EDAI_2.png" alt="EDAI_2" loading="lazy">
           </div>
           <p class="note">对应配方：0.5 mg/mL（1 mL 需 0.5 mg），溶剂为甲苯：异丙醇 = 1：1。</p>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
       </details>
 
-      <!-- 新增：甲苯 -->
       <details class="detail" id="toluene">
         <summary class="detail-title"><span class="subify">TL</span></summary>
         <div class="detail-body">
@@ -827,14 +925,13 @@
             <div class="k">电阻</div><div class="v">＞20 MΩ</div>
             <div class="k">毛细管上升</div><div class="v">（？ cm）</div>
           </div>
-         <div class="imgbox">
-          <img src="images/TL.png" alt="TL" loading="lazy">
+          <div class="imgbox">
+            <img src="images/TL.png" alt="TL" loading="lazy">
           </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
       </details>
 
-      <!-- 新增：异丙醇 -->
       <details class="detail" id="ipa">
         <summary class="detail-title"><span class="subify">IPA</span></summary>
         <div class="detail-body">
@@ -849,8 +946,52 @@
             <div class="k">电阻</div><div class="v">＞20 MΩ</div>
             <div class="k">毛细管上升</div><div class="v">2.4 cm</div>
           </div>
-         <div class="imgbox">
-          <img src="images/IPA.png" alt="IPA" loading="lazy">
+          <div class="imgbox">
+            <img src="images/IPA.png" alt="IPA" loading="lazy">
+          </div>
+          <a class="backtop" href="#top">返回表格顶部</a>
+        </div>
+      </details>
+
+      <!-- ✅ 新增：PEDOT:PSS（用于“基底溶液配方”点击跳转） -->
+      <details class="detail" id="pedotpss">
+        <summary class="detail-title"><span class="subify">PEDOT:PSS</span></summary>
+        <div class="detail-body">
+          <div class="kvgrid">
+            <div class="k">CAS</div><div class="v">155090-83-8（常见标注，按供应商SDS为准）</div>
+            <div class="k">名称</div><div class="v">聚(3,4-乙烯二氧噻吩)-聚苯乙烯磺酸盐（导电聚合物分散液）</div>
+            <div class="k">外观/颜色</div><div class="v">深蓝色/蓝黑色水分散液（常见）</div>
+            <div class="k">主要性质</div><div class="v">可能沉降；使用前通常需充分摇匀/搅拌；过滤按工艺需求</div>
+            <div class="k">溶解性</div><div class="v">本体为分散体系；与酒精混合稀释需关注相容性与稳定性</div>
+            <div class="k">注意事项</div><div class="v">以供应商SDS与实验室规范为准；稀释比例为 PEDOT:PSS : IPA = 1 : 5</div>
+            <div class="k">电阻</div><div class="v">（按批次/浓度/膜厚变化）</div>
+            <div class="k">毛细管上升</div><div class="v">（？ cm）</div>
+          </div>
+          <div class="imgbox">
+            <img src="images/PEDOT_PSS.png" alt="PEDOT:PSS" loading="lazy">
+          </div>
+          <a class="backtop" href="#top">返回表格顶部</a>
+        </div>
+      </details>
+
+      <!-- ✅ 新增：氯苯 CB（用于“反溶剂配方”点击跳转） -->
+      <details class="detail" id="cb">
+        <summary class="detail-title"><span class="subify">CB</span></summary>
+        <div class="detail-body">
+          <div class="kvgrid">
+            <div class="k">CAS</div><div class="v">108-90-7</div>
+            <div class="k">名称</div><div class="v">氯苯 / Chlorobenzene（反溶剂：纯溶剂）</div>
+            <div class="k">分子式</div><div class="v"><span class="subify">C_6H_5Cl</span></div>
+            <div class="k">外观/颜色</div><div class="v">无色透明液体</div>
+            <div class="k">主要性质</div><div class="v">挥发性；<b>易燃</b>；有刺激性气味</div>
+            <div class="k">溶解性</div><div class="v">与多数有机溶剂互溶；与水不互溶</div>
+            <div class="k">储存建议</div><div class="v"><span class="tag">密闭</span><span class="tag">远离火源</span><span class="tag">通风</span></div>
+            <div class="k">注意事项</div><div class="v">通风橱操作；避免吸入蒸气；以SDS与实验室规范为准</div>
+            <div class="k">电阻</div><div class="v">＞20 MΩ（若为电子级以瓶标为准）</div>
+            <div class="k">毛细管上升</div><div class="v">（？ cm）</div>
+          </div>
+          <div class="imgbox">
+            <img src="images/CB.png" alt="CB" loading="lazy">
           </div>
           <a class="backtop" href="#top">返回表格顶部</a>
         </div>
