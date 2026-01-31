@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>pvsk.online</title>
+  <style>
+    :root{
+      --bg:#05070d;
+    }
+
+    html, body { height: 100%; margin: 0; }
+    body{
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 冷蓝科幻背景（与你原来的同风格） */
+    body::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(980px 560px at 70% 18%, rgba(106,167,255,0.22), transparent 60%),
+        radial-gradient(760px 520px at 22% 78%, rgba(68,215,255,0.14), transparent 62%),
+        radial-gradient(560px 420px at 10% 20%, rgba(43,91,255,0.12), transparent 58%),
+        linear-gradient(180deg, rgba(255,255,255,0.06), transparent 45%);
+      pointer-events:none;
+      filter: saturate(1.05);
+    }
+    body::after{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.07) 0 1px, transparent 1px 40px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 62px);
+      opacity: 0.09;
+      pointer-events:none;
+    }
+
+    /* 图片居中显示，不铺满，不变形，大小统一受限 */
+    .stage{
+      position: relative;
+      height: 100vh;
+      width: 100vw;
+      display: grid;
+      place-items: center;
+      z-index: 1;
+      padding: 18px;
+      box-sizing: border-box;
+    }
+
+    img{
+      max-width: min(1100px, 92vw);
+      max-height: 92vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+      filter: drop-shadow(0 0 18px rgba(68,215,255,0.10))
+              drop-shadow(0 0 36px rgba(106,167,255,0.10));
+    }
+  </style>
+</head>
+
+<body>
+  <div class="stage">
+    <img id="pic" alt="" />
+  </div>
+
+  <script>
+    // 自动加载同名 PNG：例如 live-b813-fumehood.html -> live-b813-fumehood.png
+    const file = location.pathname.split("/").pop();
+    const png  = file.replace(/\.html?$/i, ".png");
+    document.getElementById("pic").src = png;
+  </script>
+</body>
+</html>
