@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>设备测试 · Device Test</title>
+  <style>
+    :root{
+      --bg:#0b0f17;
+      --text:#e9eef8;
+      --muted:#9fb0c8;
+      --line:rgba(255,255,255,.10);
+      --accent:#46d3ff;
+      --accent2:#8a7dff;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(1200px 520px at 18% 12%, rgba(70,211,255,.16), transparent 62%),
+        radial-gradient(900px 520px at 85% 30%, rgba(138,125,255,.14), transparent 62%),
+        radial-gradient(1000px 600px at 50% 120%, rgba(70,211,255,.10), transparent 55%),
+        linear-gradient(180deg, #070a10, var(--bg) 30%, #070a10 120%);
+      overflow-x:hidden;
+    }
+
+    /* subtle sci-fi grid */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.35;
+      background:
+        linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px) 0 0/38px 38px,
+        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px) 0 0/38px 38px;
+      mask-image: radial-gradient(900px 520px at 18% 12%, #000 60%, transparent 100%);
+    }
+    body::after{
+      content:"";
+      position:fixed;
+      inset:-2px;
+      pointer-events:none;
+      background:
+        radial-gradient(600px 220px at 18% 12%, rgba(70,211,255,.20), transparent 60%),
+        radial-gradient(540px 260px at 85% 40%, rgba(138,125,255,.16), transparent 62%);
+      filter: blur(10px);
+      opacity:.9;
+    }
+
+    .shell{
+      position:relative;
+      z-index:1;
+      min-height:100%;
+      padding:22px;
+      display:flex;
+      justify-content:center;
+    }
+    .app{
+      width:min(1200px, 100%);
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:14px 16px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.20));
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 26px rgba(0,0,0,.38), 0 0 0 1px rgba(255,255,255,.02) inset;
+      position:relative;
+      overflow:hidden;
+    }
+    .topbar::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: radial-gradient(520px 140px at 18% 20%, rgba(70,211,255,.20), transparent 60%);
+      pointer-events:none;
+      opacity:.9;
+    }
+    .topbar > *{position:relative}
+
+    .title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:760;
+      letter-spacing:.3px;
+    }
+    .title .logo{
+      width:38px;height:38px;border-radius:12px;
+      border:1px solid var(--line);
+      background: radial-gradient(circle at 30% 25%, rgba(70,211,255,.35), rgba(0,0,0,.18) 60%),
+                  linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.26));
+      box-shadow: 0 0 0 1px rgba(255,255,255,.02) inset, 0 8px 22px rgba(0,0,0,.40);
+      display:grid;place-items:center;
+    }
+    .title .logo svg{width:22px;height:22px;stroke:var(--accent)}
+    .subtitle{
+      margin-left:6px;
+      font-size:12px;
+      color:var(--muted);
+      font-weight:520;
+    }
+
+    .actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .pill{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.18);
+      color:var(--muted);
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .pill b{color:var(--text); font-weight:700}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.22));
+      color:var(--text);
+      text-decoration:none;
+      font-size:13px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.02) inset;
+      transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(70,211,255,.35);
+      box-shadow: 0 0 0 1px rgba(70,211,255,.12) inset, 0 12px 26px rgba(0,0,0,.40);
+    }
+    .btn svg{width:16px;height:16px;stroke:var(--accent)}
+    .btn.ghost{ background: rgba(0,0,0,.10); }
+
+    .main{
+      display:grid;
+      grid-template-columns: 260px 1fr;
+      gap:14px;
+    }
+
+    .panel{
+      border:1px solid var(--line);
+      border-radius:16px;
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.22));
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 26px rgba(0,0,0,.38), 0 0 0 1px rgba(255,255,255,.02) inset;
+      overflow:hidden;
+      position:relative;
+    }
+    .panel::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background: radial-gradient(520px 140px at 14% 12%, rgba(70,211,255,.18), transparent 60%),
+                  radial-gradient(520px 180px at 86% 40%, rgba(138,125,255,.12), transparent 60%);
+      opacity:.9;
+    }
+    .panel > *{position:relative}
+
+    .left{
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .left .section-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-weight:720;
+      letter-spacing:.2px;
+    }
+    .left .section-title small{ color:var(--muted); font-weight:550; }
+
+    .nav{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:2px;
+    }
+    .nav a{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.18);
+      text-decoration:none;
+      color:var(--text);
+      transition: border-color .12s ease, transform .12s ease, box-shadow .12s ease;
+    }
+    .nav a:hover{
+      transform: translateY(-1px);
+      border-color: rgba(70,211,255,.30);
+      box-shadow: 0 0 0 1px rgba(70,211,255,.10) inset;
+    }
+    .nav .leftmeta{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .nav .ic{
+      width:38px;height:38px;border-radius:12px;
+      border:1px solid var(--line);
+      background: radial-gradient(circle at 30% 20%, rgba(70,211,255,.28), rgba(0,0,0,.20) 62%);
+      display:grid;place-items:center;
+      flex:0 0 auto;
+    }
+    .nav .ic svg{width:18px;height:18px;stroke:var(--accent)}
+    .nav .txt{min-width:0}
+    .nav .txt .t{
+      font-weight:720;
+      font-size:13px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .nav .txt .d{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .nav .chev svg{width:16px;height:16px;stroke:rgba(233,238,248,.65)}
+
+    .hint{
+      margin-top:auto;
+      padding:12px;
+      border-radius:14px;
+      border:1px dashed rgba(70,211,255,.28);
+      background: rgba(0,0,0,.14);
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    .content{
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+
+    .card{
+      border:1px solid var(--line);
+      border-radius:16px;
+      background: rgba(0,0,0,.16);
+      overflow:hidden;
+      position:relative;
+    }
+    .card::before{
+      content:"";
+      position:absolute; inset:0;
+      pointer-events:none;
+      background: radial-gradient(520px 140px at 20% 10%, rgba(70,211,255,.12), transparent 62%);
+      opacity:.9;
+    }
+    .card > *{position:relative}
+    .card-hd{
+      padding:12px 12px 10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .card-hd .name{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:760;
+      letter-spacing:.2px;
+    }
+    .badge{
+      font-size:12px;
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.14);
+      color:var(--muted);
+      white-space:nowrap;
+    }
+    .card-bd{ padding:12px; }
+
+    /* static blocks (not editable in browser) */
+    .static-block{
+      border:1px dashed rgba(255,255,255,.14);
+      background: rgba(16,24,38,.25);
+      border-radius:14px;
+      padding:10px 10px;
+      min-height:44px;
+      color:var(--text);
+      line-height:1.55;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.02) inset;
+    }
+    .static-block .ph{
+      color: rgba(159,176,200,.9);
+      font-size:12px;
+    }
+
+    .row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 10px;
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:14px;
+      background: rgba(0,0,0,.12);
+    }
+    .row .k{color:var(--muted); font-size:12px}
+    .row .v{font-weight:720; font-size:13px}
+
+    /* image gallery (static placeholders) */
+    .img-grid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:10px;
+    }
+    .img-static{
+      border:1px dashed rgba(255,255,255,.14);
+      border-radius:14px;
+      background: rgba(16,24,38,.20);
+      overflow:hidden;
+      position:relative;
+      min-height:140px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:12px;
+    }
+    .img-static img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .img-static .ph{
+      color: rgba(159,176,200,.95);
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    .footnote{
+      margin-top:auto;
+      color:rgba(159,176,200,.85);
+      font-size:12px;
+      text-align:right;
+      padding-top:6px;
+    }
+
+    @media (max-width: 980px){
+      .main{grid-template-columns:1fr}
+      .img-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width: 540px){
+      .grid{grid-template-columns:1fr}
+      .img-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="shell">
+    <div class="app">
+      <header class="topbar">
+        <div class="title">
+          <div class="logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v4"></path>
+              <path d="M12 18v4"></path>
+              <path d="M4.93 4.93l2.83 2.83"></path>
+              <path d="M16.24 16.24l2.83 2.83"></path>
+              <path d="M2 12h4"></path>
+              <path d="M18 12h4"></path>
+              <path d="M4.93 19.07l2.83-2.83"></path>
+              <path d="M16.24 7.76l2.83-2.83"></path>
+              <circle cx="12" cy="12" r="3.2"></circle>
+            </svg>
+          </div>
+          <div>
+            <div>器件测试 <span class="subtitle">device-test.html</span></div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <div class="pill"><b>B727</b> 太阳光模拟器</div>
+          <a class="btn ghost" href="page2.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 18l-6-6 6-6"></path>
+            </svg>
+            返回
+          </a>
+        </div>
+      </header>
+
+      <div class="main">
+        <!-- 左侧：导航/说明（可按需删减） -->
+        <aside class="panel left">
+          <div class="section-title">
+            <span>分类测试</span>
+            <small>导航</small>
+          </div>
+
+          <nav class="nav">
+            <a href="env-params.html">
+              <div class="leftmeta">
+                <div class="ic" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2v4"></path>
+                    <path d="M12 18v4"></path>
+                    <path d="M4.93 4.93l2.83 2.83"></path>
+                    <path d="M16.24 16.24l2.83 2.83"></path>
+                    <path d="M2 12h4"></path>
+                    <path d="M18 12h4"></path>
+                    <path d="M4.93 19.07l2.83-2.83"></path>
+                    <path d="M16.24 7.76l2.83-2.83"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </div>
+                <div class="txt">
+                  <div class="t">参数设置</div>
+                  <div class="d">env-params.html</div>
+                </div>
+              </div>
+              <div class="chev" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 18l6-6-6-6"></path>
+                </svg>
+              </div>
+            </a>
+
+            <a href="env-live.html">
+              <div class="leftmeta">
+                <div class="ic" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 12c0-4.4 3.6-8 8-8"></path>
+                    <path d="M20 12c0 4.4-3.6 8-8 8"></path>
+                    <path d="M8.5 12a3.5 3.5 0 0 1 3.5-3.5"></path>
+                    <path d="M15.5 12a3.5 3.5 0 0 1-3.5 3.5"></path>
+                    <circle cx="12" cy="12" r="1.2"></circle>
+                  </svg>
+                </div>
+                <div class="txt">
+                  <div class="t">设备实况</div>
+                  <div class="d">env-live.html</div>
+                </div>
+              </div>
+              <div class="chev" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 18l6-6-6-6"></path>
+                </svg>
+              </div>
+            </a>
+
+            <a href="film-test.html">
+              <div class="leftmeta">
+                <div class="ic" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="4" y="5" width="16" height="14" rx="2"></rect>
+                    <path d="M8 5v14"></path>
+                    <path d="M16 5v14"></path>
+                    <path d="M4 9h16"></path>
+                    <path d="M4 15h16"></path>
+                  </svg>
+                </div>
+                <div class="txt">
+                  <div class="t">薄膜测试</div>
+                  <div class="d">film-test.html</div>
+                </div>
+              </div>
+              <div class="chev" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 18l6-6-6-6"></path>
+                </svg>
+              </div>
+            </a>
+
+            <a href="device-test.html" aria-current="page">
+              <div class="leftmeta">
+                <div class="ic" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="5" y="6" width="14" height="12" rx="2"></rect>
+                    <path d="M9 18v2"></path>
+                    <path d="M15 18v2"></path>
+                    <path d="M8 10h8"></path>
+                    <path d="M8 14h5"></path>
+                  </svg>
+                </div>
+                <div class="txt">
+                  <div class="t">设备测试</div>
+                  <div class="d">device-test.html</div>
+                </div>
+              </div>
+              <div class="chev" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 18l6-6-6-6"></path>
+                </svg>
+              </div>
+            </a>
+          </nav>
+
+          <div class="hint">
+            <b style="color:var(--text)">太阳光模拟器</b><br/>
+            器件性能测试在B727太阳光模拟器
+          </div>
+        </aside>
+
+        <!-- 右侧：展示内容（通过修改代码注释区更新） -->
+        <main class="panel content">
+          <div class="grid">
+            <section class="card">
+              <div class="card-hd">
+                <div class="name">测试原理</div>
+                <span class="badge">AM1.5G</span>
+              </div>
+              <div class="card-bd">
+                <!-- ====================== 可编辑文本：设备概述 开始 ====================== -->
+                <div class="static-block">
+                  
+                  <div style="height:6px"></div>
+                  <div>太阳光模拟器可以在室内提供可控的“1 Sun”光强，用于测试太阳能电池在1000瓦每平方米下的AM1.5G光谱下的工作效果。</div>
+                </div>
+                <!-- ====================== 可编辑文本：设备概述 结束 ====================== -->
+
+                <div style="height:10px"></div>
+                <div class="row">
+
+<div class="v">
+  <i>P</i><sub style="font-style:normal;">out,max</sub> =
+  <i>V</i><sub style="font-style:normal;">mpp</sub> &times;
+  <i>J</i><sub style="font-style:normal;">mpp</sub>
+  <br>
+
+  FF =
+  <span style="display:inline-block; vertical-align:middle; text-align:center; line-height:1;">
+    <span style="display:block; padding:0 4px 2px;">
+      <i>V</i><sub style="font-style:normal;">mpp</sub><i>J</i><sub style="font-style:normal;">mpp</sub>
+    </span>
+    <span style="display:block; border-top:1px solid currentColor; padding:2px 4px 0;">
+      <i>V</i><sub style="font-style:normal;">oc</sub><i>J</i><sub style="font-style:normal;">sc</sub>
+    </span>
+  </span>
+  <br>
+
+  PCE =
+  <span style="display:inline-block; vertical-align:middle; text-align:center; line-height:1;">
+    <span style="display:block; padding:0 4px 2px;">
+      <i>V</i><sub style="font-style:normal;">oc</sub><i>J</i><sub style="font-style:normal;">sc</sub>FF
+    </span>
+    <span style="display:block; border-top:1px solid currentColor; padding:2px 4px 0;">
+      <i>P</i><sub style="font-style:normal;">in</sub>
+    </span>
+  </span>
+</div>
+
+
+
+
+                  
+                </div>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card-hd">
+                <div class="name">测试操作</div>
+                <span class="badge">Test</span>
+              </div>
+              <div class="card-bd">
+                <!-- ====================== 可编辑文本：测试说明 开始 ====================== -->
+                <div class="static-block">
+                  <div class="ph">测试前准备工作：</div>
+                  <div style="height:6px"></div>
+                  <div>（1）打开太阳光模拟器电源，按下左侧绿色按钮，预热30 min；</div>
+                  <div>（2）连接线路，校光，控制光强在1.000SUN附近；</div>
+                  <div>（3）更换测试用夹具，选择是否用mask；</div>
+                </div>
+                <!-- ====================== 可编辑文本：测试说明 结束 ====================== -->
+
+                <div style="height:10px"></div>
+
+                <!-- ====================== 可编辑文本：测试步骤 开始 ====================== -->
+                <div class="static-block">
+                  <div class="ph">测试过程参数：</div>
+                  <div style="height:6px"></div>
+                  <ol style="margin:0; padding-left:18px">
+                    <li>电压从+1.0 V扫描到-0.1 V；</li>
+                    <li>步长0.01 / 0.02 mV，每步10 ms；</li>
+                    <li>每次开关依次拨一个点到on；</li>
+                  </ol>
+                </div>
+                <!-- ====================== 可编辑文本：测试步骤 结束 ====================== -->
+              </div>
+            </section>
+          </div>
+
+          <section class="card">
+  <div class="card-hd">
+    <div class="name">附图</div>
+    <span class="badge">Photo</span>
+  </div>
+  <div class="card-bd">
+    <div class="img-grid">
+      <!-- ====================== 可编辑图片：图1 开始 ====================== -->
+      <div class="img-static">
+        <img src="images/test1.png" alt="图1">
+      </div>
+      <!-- ====================== 可编辑图片：图1 结束 ====================== -->
+
+      <!-- ====================== 可编辑图片：图2 开始 ====================== -->
+      <div class="img-static">
+        <img src="images/test2.png" alt="图2">
+      </div>
+      <!-- ====================== 可编辑图片：图2 结束 ====================== -->
+
+      <!-- ====================== 可编辑图片：图3 开始 ====================== -->
+      <div class="img-static">
+        <img src="images/test3.png" alt="图3">
+      </div>
+      <!-- ====================== 可编辑图片：图3 结束 ====================== -->
+
+
+      <!-- ====================== 可编辑图片：图4 开始 ====================== -->
+      <div class="img-static">
+        <img src="images/test4.png" alt="图4">
+      </div>
+      <!-- ====================== 可编辑图片：图4 结束 ====================== -->
+    </div>
+  </div>
+</section>
+
+
+          <section class="card">
+            <div class="card-hd">
+              <div class="name">备注 / 结论</div>
+              <span class="badge">Result</span>
+            </div>
+            <div class="card-bd">
+              <!-- ====================== 可编辑文本：备注/结论 开始 ====================== -->
+              <div class="static-block">
+                <div class="ph">效率测试过程的注意事项：</div>
+                <div style="height:6px"></div>
+                <div>不同的起始正电压和步长会对测试参数有影响；</div>
+                <div>每个电极点和mask点的面积都略有偏差；</div>
+                <div>太阳光模拟器每次使用都要先校准；</div>
+              </div>
+              <!-- ====================== 可编辑文本：备注/结论 结束 ====================== -->
+            </div>
+          </section>
+
+          <div class="footnote">欢迎补充信息</div>
+        </main>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
