@@ -1,362 +1,820 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>环境控制 | pvsk.online</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>环境控制</title>
+<style>
     :root{
-      --bg:#05070d;
-      --text: rgba(231, 238, 255, 0.92);
-      --muted: rgba(231, 238, 255, 0.66);
-
-      /* 冷蓝霓虹主色 */
-      --neon:#6aa7ff;
-      --neon2:#44d7ff;
-      --neon3:#2b5bff;
-
-      --panel: rgba(255,255,255,0.045);
-      --border: rgba(106,167,255,0.22);
-      --glow: 0 0 16px rgba(106,167,255,0.22), 0 0 30px rgba(68,215,255,0.10);
-      --glow-strong: 0 0 18px rgba(106,167,255,0.38), 0 0 42px rgba(68,215,255,0.18);
-
-      --radius: 18px;
-      --radius2: 14px;
+      --bg:#0b0f17;
+      --card:#101826;
+      --card2:#0f1724;
+      --text:#e9eef8;
+      --muted:#9fb0c8;
+      --line:rgba(255,255,255,.08);
+      --glow:rgba(64,190,255,.35);
+      --accent:#46d3ff;
+      --accent2:#8a7dff;
     }
-
-    html, body { height: 100%; margin: 0; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
     body{
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC",
-                   "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
-      background: var(--bg);
-      position: relative;
-      overflow-x: hidden;
-      overflow-y: auto;
+      margin:0;
+      background: radial-gradient(1200px 600px at 20% 10%, rgba(70,211,255,.18), transparent 60%),
+                  radial-gradient(900px 500px at 80% 40%, rgba(138,125,255,.14), transparent 55%),
+                  linear-gradient(180deg, #070a10, var(--bg));
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
+                   "Microsoft YaHei", Arial, "Noto Sans CJK SC", sans-serif;
+      letter-spacing:.2px;
     }
-
-    /* 冷蓝科幻背景（纯 CSS） */
-    body::before{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        radial-gradient(980px 560px at 70% 18%, rgba(106,167,255,0.22), transparent 60%),
-        radial-gradient(760px 520px at 22% 78%, rgba(68,215,255,0.14), transparent 62%),
-        radial-gradient(560px 420px at 10% 20%, rgba(43,91,255,0.12), transparent 58%),
-        linear-gradient(180deg, rgba(255,255,255,0.06), transparent 45%);
-      pointer-events:none;
-      filter: saturate(1.05);
-    }
-    body::after{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        repeating-linear-gradient(0deg, rgba(255,255,255,0.07) 0 1px, transparent 1px 40px),
-        repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 62px);
-      opacity: 0.09;
-      pointer-events:none;
-    }
-
     .wrap{
-      position: relative;
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 22px 16px 56px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+      max-width:1020px;
+      margin:0 auto;
+      padding:28px 18px 46px;
+    }
+    .topbar{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:14px;
+      padding:18px 18px 16px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow: 0 12px 40px rgba(0,0,0,.45);
+      position:relative;
+      overflow:hidden;
+    }
+    .topbar:before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(600px 220px at 18% 12%, rgba(70,211,255,.18), transparent 60%),
+                  radial-gradient(540px 260px at 85% 40%, rgba(138,125,255,.14), transparent 62%);
+      filter: blur(8px);
+      pointer-events:none;
+    }
+    .topbar > *{position:relative}
+    .title{
+      font-size:20px;
+      font-weight:680;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .badge{
+      font-size:12px;
+      color:var(--muted);
+      border:1px solid var(--line);
+      padding:4px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.03);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.02);
+      white-space:nowrap;
+    }
+    .subtitle{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .pill{
+      font-size:12px;
+      color:var(--text);
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.18);
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(70,211,255,.12), 0 0 18px rgba(70,211,255,.45);
+    }
+    .grid{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: .92fr 1.08fr;
+      gap:14px;
+    }
+    @media (max-width: 880px){
+      .grid{grid-template-columns:1fr}
+    }
+    .panel{
+      border:1px solid var(--line);
+      border-radius:16px;
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+      box-shadow: 0 18px 50px rgba(0,0,0,.45);
+      overflow:hidden;
+      position:relative;
+    }
+    .panel:before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      background: radial-gradient(500px 240px at 20% 0%, rgba(70,211,255,.12), transparent 60%),
+                  radial-gradient(520px 260px at 90% 40%, rgba(138,125,255,.10), transparent 62%);
+      filter: blur(10px);
+      pointer-events:none;
+    }
+    .panel > *{position:relative}
+    .panel-hd{
+      padding:16px 16px 10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:10px;
+      border-bottom:1px solid var(--line);
+      background: rgba(0,0,0,.12);
+    }
+    .panel-hd .h{
+      font-weight:700;
+      font-size:14px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .panel-hd .h small{
+      font-weight:500;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .panel-bd{
+      padding:14px 16px 16px;
     }
 
-    .topbar{
+    .cards{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+    }
+    .card{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding:14px 14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(16,24,38,.88), rgba(10,14,22,.72));
+      box-shadow: 0 10px 28px rgba(0,0,0,.35);
+      text-decoration:none;
+      color:inherit;
+      position:relative;
+      overflow:hidden;
+    }
+    .card:before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(340px 120px at 18% 0%, rgba(70,211,255,.14), transparent 60%),
+                  radial-gradient(320px 140px at 90% 40%, rgba(138,125,255,.12), transparent 65%);
+      filter: blur(10px);
+      opacity:.8;
+      pointer-events:none;
+    }
+    .card > *{position:relative}
+    .icon{
+      width:44px;
+      height:44px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.18);
+      display:grid;
+      place-items:center;
+      flex:0 0 auto;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.02);
+    }
+    .icon svg{
+      width:26px;height:26px;
+      stroke: var(--accent);
+      filter: drop-shadow(0 0 10px rgba(70,211,255,.30));
+    }
+    .meta{flex:1 1 auto; min-width:0}
+    .meta .title{
+      font-size:15px;
+      font-weight:760;
+      margin:0;
+      gap:0;
+    }
+    .desc{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:12.5px;
+      line-height:1.55;
+    }
+    .chiprow{
+      margin-top:10px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .chip{
+      font-size:11px;
+      color:#d8e6fb;
+      padding:5px 9px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+    }
+    .mini{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+    }
+    .kpi{
+      padding:14px 14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(16,24,38,.72), rgba(10,14,22,.62));
+      box-shadow: 0 10px 28px rgba(0,0,0,.32);
+      position:relative;
+      overflow:hidden;
+    }
+    .kpi:before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(340px 120px at 18% 0%, rgba(70,211,255,.10), transparent 62%),
+                  radial-gradient(320px 140px at 90% 40%, rgba(138,125,255,.10), transparent 65%);
+      filter: blur(10px);
+      opacity:.75;
+      pointer-events:none;
+    }
+    .kpi > *{position:relative}
+    .kpi .k{
+      font-size:12px;
+      color:var(--muted);
       display:flex;
       justify-content:space-between;
       align-items:center;
-      font-size:14px;
-      color: var(--muted);
+      gap:10px;
     }
-    .topbar a{
-      color: var(--text);
+    .kpi .v{
+      margin-top:10px;
+      font-size:22px;
+      font-weight:820;
+      letter-spacing:.4px;
+    }
+    .kpi .u{
+      margin-left:6px;
+      font-size:12px;
+      color:var(--muted);
+      font-weight:600;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.20);
+      color:var(--text);
       text-decoration:none;
-      border: 1px solid var(--border);
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(106,167,255,0.06);
-      box-shadow: var(--glow);
+      box-shadow: 0 10px 28px rgba(0,0,0,.35);
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
     }
-    .topbar a:hover{
-      background: rgba(106,167,255,0.11);
-      box-shadow: var(--glow-strong);
+    .btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(70,211,255,.22);
+      box-shadow: 0 14px 34px rgba(0,0,0,.45);
     }
+    .btn svg{
+      width:16px;height:16px;
+      stroke: var(--accent);
+      filter: drop-shadow(0 0 10px rgba(70,211,255,.26));
+    }
+    .footer{
+      margin-top:14px;
+      color:rgba(159,176,200,.85);
+      font-size:12px;
+      text-align:right;
+      min-height: 16px;
+    }
+  
+    
+    /* ===== Weather rows (display-only) ===== */
+    .weather-grid,
+    .weather-list{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap:10px;
+      margin-top:10px;
+    }
+    .weather-grid{ margin-top:8px; }
+    .weather-list{ margin-top:10px; }
 
-    h1{
-      margin: 0;
-      font-size: 18px;
-      font-weight: 650;
-      letter-spacing: 1px;
-      text-shadow: 0 0 18px rgba(106,167,255,0.25);
-    }
-    .subtitle{
-      margin: 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.7;
-    }
+    /* Let dynamically inserted detail cards participate in the grid */
+    .wh-detail-items{ display: contents; }
 
-    .panel{
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--panel);
-      backdrop-filter: blur(10px);
-      box-shadow: var(--glow);
-      overflow: hidden;
-      position: relative;
-      padding: 22px 18px 26px;
-    }
-    .panel::before{
-      content:"";
-      position:absolute; inset: 10px;
-      border-radius: calc(var(--radius) - 8px);
-      border: 1px solid rgba(68,215,255,0.10);
-      pointer-events:none;
-    }
-    .panel::after{
-      content:"";
-      position:absolute;
-      left:-20%;
-      top:-60%;
-      width: 140%;
-      height: 120%;
-      background: linear-gradient(120deg, transparent 40%, rgba(68,215,255,0.08), transparent 60%);
-      transform: rotate(8deg);
-      opacity: 0.55;
-      pointer-events:none;
-      animation: sweep 6.2s linear infinite;
-    }
-    @keyframes sweep{
-      0%{ transform: translateX(-18%) rotate(8deg); }
-      100%{ transform: translateX(18%) rotate(8deg); }
-    }
-
-    /* ✅ 两个选项按钮：上下排列 + 固定间距 */
-    .cards{
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;     /* 两按钮之间距离（想更远就调大） */
-      margin-top: 6px;
-      z-index: 1;
-    }
-
-    .card{
-      position: relative;
-      display: grid;
-      grid-template-columns: 84px 1fr;
-      gap: 14px;
-      align-items: center;
-
-      border: 1px solid rgba(106,167,255,0.26);
-      border-radius: 18px;
-      padding: 16px 16px;
-      background: linear-gradient(180deg, rgba(106,167,255,0.10), rgba(106,167,255,0.03));
-      box-shadow: var(--glow);
-      text-decoration: none;
-      color: rgba(231,238,255,0.95);
-      overflow: hidden;
-      transition: transform .12s ease, box-shadow .14s ease, border-color .14s ease, background .14s ease;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    /* 按钮扫光 */
-    .card::after{
-      content:"";
-      position:absolute;
-      left:-30%;
-      top:-60%;
-      width: 130%;
-      height: 220%;
-      background: linear-gradient(120deg, transparent 45%, rgba(68,215,255,0.18), transparent 55%);
-      transform: rotate(12deg);
-      opacity: 0.38;
-      pointer-events:none;
-      animation: btnSweep 5.0s linear infinite;
-    }
-    @keyframes btnSweep{
-      0%{ transform: translateX(-24%) rotate(12deg); opacity: 0.20; }
-      55%{ opacity: 0.52; }
-      100%{ transform: translateX(24%) rotate(12deg); opacity: 0.20; }
-    }
-
-    .card:hover{
-      transform: translateY(-2px);
-      border-color: rgba(68,215,255,0.46);
-      background: linear-gradient(180deg, rgba(106,167,255,0.14), rgba(106,167,255,0.05));
-      box-shadow: var(--glow-strong);
-    }
-    .card:active{
-      transform: translateY(0px);
-      box-shadow: 0 0 12px rgba(106,167,255,0.20), 0 0 20px rgba(68,215,255,0.10);
-    }
-    .card:focus-visible{
-      outline: 2px solid rgba(68,215,255,0.55);
-      outline-offset: 3px;
-    }
-
-    .icon{
-      width: 84px;
-      height: 84px;
-      display: grid;
-      place-items: center;
-      border-radius: 18px;
-      border: 1px solid rgba(68,215,255,0.24);
-      background: rgba(255,255,255,0.03);
-      box-shadow: 0 0 18px rgba(68,215,255,0.12), inset 0 0 18px rgba(106,167,255,0.10);
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* 图标背景脉冲环 */
-    .icon::before{
-      content:"";
-      position:absolute;
-      inset: -12px;
-      border-radius: 999px;
-      border: 1px solid rgba(68,215,255,0.18);
-      opacity: 0.0;
-      transform: scale(0.85);
-      animation: pulse 2.6s ease-in-out infinite;
-    }
-    @keyframes pulse{
-      0%{ opacity: 0.0; transform: scale(0.85); }
-      45%{ opacity: 0.55; }
-      100%{ opacity: 0.0; transform: scale(1.18); }
-    }
-
-    .icon svg{
-      width: 54px;
-      height: 54px;
-      stroke: rgba(68,215,255,0.95);
-      filter: drop-shadow(0 0 10px rgba(68,215,255,0.18));
-    }
-
-    .meta{
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      min-width: 0;
-    }
-
-    .title{
-      font-size: 20px;
-      font-weight: 780;
-      letter-spacing: 1px;
-      text-shadow: 0 0 14px rgba(68,215,255,0.14);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .desc{
-      font-size: 13px;
-      color: rgba(231,238,255,0.70);
-      line-height: 1.6;
-    }
-
-    .chiprow{
-      margin-top: 6px;
+    .wcard{
       display:flex;
-      flex-wrap: wrap;
-      gap: 8px;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: 0 10px 30px rgba(0,0,0,.18);
+      min-width:0;
     }
-    .chip{
-      display:inline-block;
-      padding: 2px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(68,215,255,0.22);
-      background: rgba(68,215,255,0.06);
-      color: rgba(231,238,255,0.84);
-      font-size: 12px;
-      letter-spacing: 0.4px;
-      white-space: nowrap;
+    .wcard.wide{ }
+    .wcard.detail{
+      padding:9px 10px;
     }
+
+    .wicon{
+      width:34px;
+      height:34px;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      flex:0 0 34px;
+    }
+    .wcard.detail .wicon{
+      width:30px;
+      height:30px;
+      flex-basis:30px;
+      border-radius:10px;
+    }
+
+    .wicon svg{
+      width:20px;
+      height:20px;
+      stroke: rgba(233,238,248,.95);
+    }
+    .wcard.detail .wicon svg{
+      width:18px;
+      height:18px;
+    }
+
+    .wmeta{
+      min-width:0;
+      flex:1;
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      gap:10px;
+      white-space:nowrap;
+      overflow-x:auto;
+      overflow-y:hidden;
+      scrollbar-width:thin;
+      -webkit-overflow-scrolling:touch;
+    }
+    .wmeta::-webkit-scrollbar{height:6px}
+    .wmeta::-webkit-scrollbar-thumb{
+      background: rgba(255,255,255,.18);
+      border-radius:999px;
+    }
+    .wlabel{
+      margin:0;
+      font-size:13px;
+      font-weight:700;
+      color: rgba(233,238,248,.78);
+      white-space:nowrap;
+    }
+    .wcard.detail .wlabel{ font-size:12px; font-weight:650; }
+
+    .wvalue{
+      min-width:0;
+      font-size:14px;
+      font-weight:800;
+      letter-spacing:.2px;
+      color: rgba(233,238,248,.98);
+      white-space:nowrap;
+      overflow:visible;
+      text-overflow:clip;
+      text-align:right;
+      margin-left:auto;
+    }
+    .wvalue.small{
+      font-size:13px;
+      font-weight:700;
+      opacity:.92;
+    }
+    .wunit{
+      font-size:12px;
+      font-weight:700;
+      opacity:.75;
+      margin-left:4px;
+    }
+
+    /* Updated time smaller + span full width */
+    .wupdated{
+      grid-column: 1 / -1;
+      padding:8px 12px;
+      opacity:.92;
+    }
+    .wupdated .wicon{
+      width:26px;height:26px;flex-basis:26px;border-radius:10px;
+    }
+    .wupdated .wicon svg{ width:16px;height:16px; }
+    .wupdated .wlabel{ font-size:12px; }
+    .wupdated .wvalue{ font-size:12px; font-weight:650; opacity:.85; }
 
     @media (max-width: 720px){
-      .card{ grid-template-columns: 78px 1fr; }
-      .icon{ width: 78px; height: 78px; }
+      .weather-grid,
+      .weather-list{ grid-template-columns: 1fr; }
+
+      .wcard{ padding:10px 10px; }
+      .wicon{ width:32px; height:32px; flex-basis:32px; }
+      .wicon svg{ width:18px; height:18px; }
+      .wlabel{ font-size:12px; }
+      .wvalue{ font-size:14px; }
+
+      .wupdated{ grid-column: 1 / -1; }
     }
 
-    @media (prefers-reduced-motion: reduce){
-      .panel::after, .card::after, .icon::before{ animation: none; }
-      .card{ transition: none; }
-    }
-  </style>
+</style>
 </head>
-
 <body>
-  <div class="wrap">
-    <div class="topbar">
-      <div>pvsk.online</div>
-      <a href="page2.html">返回菜单</a>
-    </div>
-
-    <h1>环境控制</h1>
-    <p class="subtitle">请选择进入环境参数记录或设备实况监控模块。</p>
-
-    <div class="panel">
-      <div class="cards">
-
-        <!-- 环境参数 -->
-        <a class="card" href="env-params.html" aria-label="进入环境参数">
-          <div class="icon" aria-hidden="true">
-            <!-- HUD 风格：雷达/参数曲线 -->
-            <svg viewBox="0 0 64 64" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="32" cy="32" r="22" opacity="0.9"/>
-              <circle cx="32" cy="32" r="14" opacity="0.55"/>
-              <path d="M10 32h44" opacity="0.45"/>
-              <path d="M32 10v44" opacity="0.45"/>
-              <path d="M20 40c4-10 8 2 12-8s8 8 12-2 8 6 8 6" />
-              <path d="M32 32l16-10" />
-              <circle cx="48" cy="22" r="2.6" />
-            </svg>
-          </div>
-          <div class="meta">
-            <div class="title">环境参数</div>
-            <div class="desc">温湿度 / 氧含量 / 压差等关键参数的记录与追溯。</div>
-            <div class="chiprow">
-              <span class="chip">Log</span>
-              <span class="chip">Trend</span>
-              <span class="chip">Threshold</span>
-            </div>
-          </div>
+<div class="wrap">
+<div class="topbar">
+<div>
+<div class="title">环境控制 <span class="badge">Env-Control</span></div>
+<div class="subtitle">天气实时数据来自Open-Meteo</div>
+</div>
+<div class="right">
+<div class="pill"><span class="dot"></span>运行中</div>
+<a aria-label="返回首页" class="btn" href="page2.html">
+<svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<path d="M15 18l-6-6 6-6"></path>
+</svg>
+          返回
         </a>
+</div>
+</div>
+<div class="grid">
+<div class="panel">
+<div class="panel-hd">
+<div class="h">控制面板 <small></div>
+<div class="badge">v1.0</div>
+</div>
+<div class="panel-bd">
+<div class="cards">
+<!-- 参数设置 -->
+<a aria-label="进入参数控制" class="card" href="env-params.html">
+<div aria-hidden="true" class="icon">
+<svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewBox="0 0 24 24">
+  <!-- 外圈 -->
+  <circle cx="12" cy="12" r="6.6"></circle>
+  <!-- 中心孔 -->
+  <circle cx="12" cy="12" r="2.4"></circle>
 
-        <!-- 设备实况 -->
-        <a class="card" href="env-live.html" aria-label="进入设备实况">
-          <div class="icon" aria-hidden="true">
-            <!-- HUD 风格：监控屏/相机 -->
-            <svg viewBox="0 0 64 64" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="10" y="14" width="44" height="30" rx="6" opacity="0.95"/>
-              <path d="M22 50h20" opacity="0.7"/>
-              <path d="M28 44v6" opacity="0.7"/>
-              <path d="M36 44v6" opacity="0.7"/>
-              <circle cx="32" cy="29" r="7" />
-              <path d="M32 22v3" opacity="0.8"/>
-              <path d="M45 18l6-4" opacity="0.65"/>
-              <circle cx="50" cy="14" r="2.2" />
-            </svg>
-          </div>
-          <div class="meta">
-            <div class="title">设备实况</div>
-            <div class="desc">关键设备状态与现场画面：运行、告警、占用与维护记录。</div>
-            <div class="chiprow">
-              <span class="chip">Live</span>
-              <span class="chip">Status</span>
-              <span class="chip">Alarm</span>
-            </div>
-          </div>
-        </a>
+  <!-- 8个齿（短粗线段） -->
+  <path d="M12 1.9v2.7"></path>
+  <path d="M12 19.4v2.7"></path>
+  <path d="M1.9 12h2.7"></path>
+  <path d="M19.4 12h2.7"></path>
 
-      </div>
-    </div>
-  </div>
+  <path d="M4.2 4.2l1.9 1.9"></path>
+  <path d="M17.9 17.9l1.9 1.9"></path>
+  <path d="M4.2 19.8l1.9-1.9"></path>
+  <path d="M17.9 6.1l1.9-1.9"></path>
+</svg>
+
+
+</div>
+<div class="meta">
+<div class="title">参数控制</div>
+<div class="desc">制备过程空气温湿度、热台温度、手套箱氛围与热蒸发参数</div>
+<div class="chiprow">
+<span class="chip">Setpoint</span>
+<span class="chip">Alarm</span>
+<span class="chip">Linkage</span>
+</div>
+</div>
+</a>
+<!-- 设备实况 -->
+<a aria-label="进入设备实况" class="card" href="env-live.html">
+<div aria-hidden="true" class="icon">
+<svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 24 24">
+<path d="M3 12h4l3-8 4 16 3-8h4"></path>
+<path d="M4 19h16"></path>
+</svg>
+</div>
+<div class="meta">
+<div class="title">设备实况</div>
+<div class="desc">卫生检查、设备状态与运行日志</div>
+<div class="chiprow">
+<span class="chip">Realtime</span>
+<span class="chip">Sensors</span>
+<span class="chip">Logs</span>
+</div>
+</div>
+</a>
+<!-- 薄膜参数 -->
+<a aria-label="进入薄膜参数" class="card" href="film-test.html">
+<div aria-hidden="true" class="icon">
+<!-- HUD 风格：薄膜/层叠结构 -->
+<svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" viewbox="0 0 64 64">
+<path d="M16 18h32l6 6v22l-6 6H16l-6-6V24l6-6z" opacity="0.95"></path>
+<path d="M22 22v20" opacity="0.65"></path>
+<path d="M42 22v20" opacity="0.65"></path>
+<path d="M26 28h12"></path>
+<path d="M26 36h12" opacity="0.85"></path>
+<circle cx="20" cy="26" opacity="0.8" r="2.4"></circle>
+<circle cx="44" cy="38" opacity="0.8" r="2.4"></circle>
+</svg>
+</div>
+<div class="meta">
+<div class="title">薄膜参数</div>
+<div class="desc">膜厚 / 透过率 / 电阻等薄膜关键参数的记录与校验</div>
+<div class="chiprow">
+<span class="chip">Film</span>
+<span class="chip">Spec</span>
+<span class="chip">Calib</span>
+</div>
+</div>
+</a>
+</div>
+</div>
+</div>
+<div class="panel">
+<div class="panel-hd">
+<div class="h">洪山区天气 <small>华中科技大学附近</small></div>
+<div class="badge">LIVE</div>
+</div>
+<div class="panel-bd">
+<div aria-label="实时天气核心参数" class="weather-grid">
+<div class="wcard">
+<div aria-hidden="true" class="wicon">
+<!-- 温度 -->
+<svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 24 24">
+<path d="M14 14.5V5a2 2 0 0 0-4 0v9.5a4 4 0 1 0 4 0z"></path>
+<path d="M12 17.8v-6.6"></path>
+</svg>
+</div>
+<div class="wmeta">
+<div class="wlabel">气温</div>
+<div class="wvalue"><span id="wh-temp">--</span><span class="wunit" id="wh-temp-unit">°C</span></div>
+</div>
+</div>
+<div class="wcard">
+<div aria-hidden="true" class="wicon">
+<!-- 湿度 -->
+<svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 24 24">
+<path d="M12 2s6 7 6 12a6 6 0 0 1-12 0c0-5 6-12 6-12z"></path>
+<path d="M9.5 14.2c.4 1.6 1.6 2.8 3.2 3.2"></path>
+</svg>
+</div>
+<div class="wmeta">
+<div class="wlabel">湿度</div>
+<div class="wvalue"><span id="wh-rh">--</span><span class="wunit" id="wh-rh-unit">%</span></div>
+</div>
+</div>
+<div class="wcard">
+<div aria-hidden="true" class="wicon">
+<!-- 风速 -->
+<svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 24 24">
+<path d="M3 8h11a3 3 0 1 0-3-3"></path>
+<path d="M3 12h15a3 3 0 1 1-3 3"></path>
+<path d="M3 16h7"></path>
+</svg>
+</div>
+<div class="wmeta">
+<div class="wlabel">风速</div>
+<div class="wvalue"><span id="wh-wind">--</span><span class="wunit" id="wh-wind-unit">km/h</span></div>
+</div>
+</div>
+</div>
+<div aria-label="实时天气详情" class="weather-list"><!-- JS 仍然写入 #wh-detail，这里只做展示拆分 --><div aria-label="拆分后的详细信息" class="wh-detail-items" id="wh-detail-items"></div><div id="wh-detail" style="display:none">正在获取详细气候条件…</div>
+<div class="wcard wide wupdated">
+<div aria-hidden="true" class="wicon">
+<svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="9"></circle>
+<path d="M12 7v6l4 2"></path>
+</svg>
+</div>
+<div class="wmeta">
+<div class="wlabel">更新时间</div>
+<div class="wvalue" id="wh-updated">更新时间：--</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<script>
+    (async function () {
+      const elTemp = document.getElementById('wh-temp');
+      const elTempUnit = document.getElementById('wh-temp-unit');
+      const elRh = document.getElementById('wh-rh');
+      const elRhUnit = document.getElementById('wh-rh-unit');
+      const elWind = document.getElementById('wh-wind');
+      const elWindUnit = document.getElementById('wh-wind-unit');
+      const elUpdated = document.getElementById('wh-updated');
+      const elDetail = document.getElementById('wh-detail');
+
+      // 武汉坐标（WGS84）
+      const LAT = 30.51184;
+      const LON = 114.42398;
+
+      // Open-Meteo：无需 Key，支持 CORS
+      const URL =
+        'https://api.open-meteo.com/v1/forecast'
+        + '?latitude=' + encodeURIComponent(LAT)
+        + '&longitude=' + encodeURIComponent(LON)
+        + '&current=' + encodeURIComponent('temperature_2m,relative_humidity_2m,apparent_temperature,dew_point_2m,precipitation,pressure_msl,cloud_cover,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m')
+        + '&temperature_unit=celsius'
+        + '&wind_speed_unit=kmh'
+        + '&timezone=' + encodeURIComponent('Asia/Shanghai');
+
+      function dirText(deg){
+        if (typeof deg !== 'number') return '--';
+        const dirs = ['北','东北','东','东南','南','西南','西','西北','北'];
+        const i = Math.round(deg/45);
+        return dirs[Math.max(0, Math.min(i, 8))];
+      }
+      function wmoText(code){
+        const map = {
+          0:'晴',1:'大致晴',2:'局部多云',3:'阴',
+          45:'雾',48:'雾凇',
+          51:'小毛毛雨',53:'中毛毛雨',55:'强毛毛雨',
+          56:'小冻毛毛雨',57:'强冻毛毛雨',
+          61:'小雨',63:'中雨',65:'大雨',
+          66:'小冻雨',67:'大冻雨',
+          71:'小雪',73:'中雪',75:'大雪',
+          77:'雪粒',
+          80:'小阵雨',81:'中阵雨',82:'强阵雨',
+          85:'小阵雪',86:'大阵雪',
+          95:'雷暴',96:'雷暴夹小冰雹',99:'雷暴夹大冰雹'
+        };
+        return (typeof code === 'number' && map[code] !== undefined) ? map[code] : ('代码 ' + code);
+      }
+
+      async function refresh() {
+        try {
+          const r = await fetch(URL, { cache: 'no-store' });
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          const data = await r.json();
+
+          const cur = data.current || {};
+          const units = data.current_units || {};
+
+          const t = cur.temperature_2m;
+
+          const rh = cur.relative_humidity_2m;
+          const w = cur.wind_speed_10m;
+
+          const app = cur.apparent_temperature;
+          const dew = cur.dew_point_2m;
+          const pr = cur.pressure_msl;
+          const cc = cur.cloud_cover;
+          const pp = cur.precipitation;
+          const wd = cur.wind_direction_10m;
+          const wg = cur.wind_gusts_10m;
+          const wc = cur.weather_code;
+          elTemp.textContent = (typeof t === 'number') ? t.toFixed(1) : '--';
+          elRh.textContent = (typeof rh === 'number') ? String(Math.round(rh)) : '--';
+          elWind.textContent = (typeof w === 'number') ? w.toFixed(1) : '--';
+
+          elTempUnit.textContent = units.temperature_2m || '°C';
+          elRhUnit.textContent = units.relative_humidity_2m || '%';
+          elWindUnit.textContent = units.wind_speed_10m || 'km/h';
+
+          const parts = [];
+          parts.push('天气：' + wmoText(wc));
+          parts.push('体感：' + ((typeof app === 'number') ? app.toFixed(1) : '--') + (units.apparent_temperature || '°C'));
+          parts.push('露点：' + ((typeof dew === 'number') ? dew.toFixed(1) : '--') + (units.dew_point_2m || '°C'));
+          parts.push('气压：' + ((typeof pr === 'number') ? pr.toFixed(0) : '--') + (units.pressure_msl || 'hPa'));
+          parts.push('云量：' + ((typeof cc === 'number') ? Math.round(cc) : '--') + (units.cloud_cover || '%'));
+          parts.push('降水：' + ((typeof pp === 'number') ? pp.toFixed(1) : '--') + (units.precipitation || 'mm'));
+          parts.push('风向：' + ((typeof wd === 'number') ? Math.round(wd) : '--') + '°（' + dirText(wd) + '）');
+          parts.push('阵风：' + ((typeof wg === 'number') ? wg.toFixed(1) : '--') + (units.wind_gusts_10m || 'km/h'));
+          if (elDetail) elDetail.textContent = parts.join('  ·  ');
+
+          if (cur.time) {
+            elUpdated.textContent =  String(cur.time).replace('T', ' ');
+          } else {
+            elUpdated.textContent = '--';
+          }
+        } catch (e) {
+          elTemp.textContent = elRh.textContent = elWind.textContent = '--';
+          elUpdated.textContent = '天气获取失败';
+          if (elDetail) elDetail.textContent = '无法获取详细气候条件。';
+        }
+      }
+
+      await refresh();
+      // 每 10 分钟刷新一次
+      setInterval(refresh, 10 * 60 * 1000);
+    })();
+  </script><script>
+(function(){
+  const raw = document.getElementById('wh-detail');
+  const host = document.getElementById('wh-detail-items');
+  if (!raw || !host) return;
+
+  const ICONS = {
+    '天气': `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 15a4 4 0 0 1 0-8 5 5 0 0 1 9.7 1.6A3.5 3.5 0 1 1 18 15H7z"></path>
+            </svg>`,
+    '体感': `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="8" r="2.2"></circle>
+          <path d="M4.5 20a4.5 4.5 0 0 1 9 0"></path>
+          <path d="M16.8 7.2c1-.9 2.4-.9 3.2 0"></path>
+          <path d="M16.8 11.2c1-.9 2.4-.9 3.2 0"></path>
+        </svg>`,
+    '露点': `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2s6 7 6 12a6 6 0 0 1-12 0c0-5 6-12 6-12z"></path>
+              <circle cx="9.5" cy="14.5" r="1.2"></circle>
+            </svg>`,
+    '气压': `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 14a8 8 0 1 1 16 0"></path>
+              <path d="M12 12l4-2"></path>
+              <path d="M6.5 14h11"></path>
+            </svg>`,
+    '云量': `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 16a4 4 0 0 1 0-8 5 5 0 0 1 9.7 1.6A3.5 3.5 0 1 1 18 16H7z"></path>
+            </svg>`,
+    '降水': `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 12a4 4 0 0 1 0-8 5 5 0 0 1 9.7 1.6A3.5 3.5 0 1 1 18 12H7z"></path>
+              <path d="M9 16l-1 2"></path>
+              <path d="M13 16l-1 2"></path>
+              <path d="M17 16l-1 2"></path>
+            </svg>`,
+    '风向': `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v6"></path>
+              <path d="M12 22v-6"></path>
+              <path d="M2 12h6"></path>
+              <path d="M22 12h-6"></path>
+              <path d="M12 8l3 4-3 4-3-4 3-4z"></path>
+            </svg>`,
+    '阵风': `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 8h11a3 3 0 1 0-3-3"></path>
+              <path d="M3 12h15a3 3 0 1 1-3 3"></path>
+              <path d="M3 16h7"></path>
+            </svg>`,
+    '状态': `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 9v4"></path>
+              <path d="M12 17h.01"></path>
+              <path d="M10.3 4.3h3.4l7.3 12.7a2 2 0 0 1-1.7 3H4.7a2 2 0 0 1-1.7-3l7.3-12.7z"></path>
+            </svg>`
+  };
+
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, (c)=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[c]));
+  }
+  function iconFor(k){ return ICONS[k] || ICONS['状态']; }
+
+  function render(){
+    const text = (raw.textContent || '').trim();
+    if (!text) return;
+
+    // 初始占位/错误态：显示为 1 个状态项
+    if (text.includes('正在获取') || text.includes('无法获取') || text.includes('获取失败')) {
+      host.innerHTML =
+        `<div class="wcard detail">
+           <div class="wicon" aria-hidden="true">${iconFor('状态')}</div>
+           <div class="wmeta">
+             <div class="wlabel">状态</div>
+             <div class="wvalue small">${esc(text)}</div>
+           </div>
+         </div>`;
+      return;
+    }
+
+    const segs = text.split('·').map(s => s.trim()).filter(Boolean);
+    const items = segs.map(seg => {
+      const idx = seg.indexOf('：');
+      if (idx > -1) return { k: seg.slice(0, idx).trim(), v: seg.slice(idx + 1).trim() };
+      return { k: '详情', v: seg };
+    });
+
+    host.innerHTML = items.map(({k,v}) =>
+      `<div class="wcard detail">
+         <div class="wicon" aria-hidden="true">${iconFor(k)}</div>
+         <div class="wmeta">
+           <div class="wlabel">${esc(k)}</div>
+           <div class="wvalue">${esc(v)}</div>
+         </div>
+       </div>`
+    ).join('');
+  }
+
+  const obs = new MutationObserver(render);
+  obs.observe(raw, { childList:true, characterData:true, subtree:true });
+  render();
+})();
+</script>
 </body>
 </html>
