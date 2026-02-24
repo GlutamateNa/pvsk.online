@@ -48,7 +48,7 @@
         .content-container {
             position: relative;
             z-index: 1;
-            max-width: 1200px;
+            max-width: 1400px; /* 加宽容器适配更多图片 */
             margin: 0 auto;
             padding: 50px 20px;
             color: #00ffff; /* 科幻青色文字 */
@@ -72,11 +72,11 @@
             text-shadow: 0 0 5px #00ffff;
         }
 
-        /* 图片展示网格 */
+        /* 图片展示网格 - 优化自适应布局 */
         .image-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 缩小最小宽度，适配更多列 */
+            gap: 20px; /* 减小间距，适配更多图片 */
         }
 
         /* 图片卡片样式 */
@@ -84,9 +84,12 @@
             background: rgba(0, 30, 60, 0.6);
             border: 1px solid #00ffff;
             border-radius: 10px;
-            padding: 20px;
+            padding: 15px;
             box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column; /* 卡片内垂直布局 */
+            height: 100%; /* 卡片高度自适应 */
         }
 
         .image-card:hover {
@@ -94,14 +97,19 @@
             box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
         }
 
-        /* 图片样式 */
+        /* 图片容器 - 核心：自适应图片大小 */
+        .image-wrapper {
+            flex: 1; /* 占满卡片剩余高度 */
+            margin-bottom: 15px;
+        }
+
+        /* 图片样式 - 完全自适应 */
         .display-image {
             width: 100%;
-            height: 250px;
-            object-fit: cover;
+            height: 100%; /* 高度自适应容器 */
+            object-fit: cover; /* 保持比例，裁剪多余部分 */
             border-radius: 5px;
             border: 1px solid #00ffff;
-            margin-bottom: 15px;
         }
 
         /* 图片描述文字 */
@@ -110,6 +118,7 @@
             font-size: 1rem;
             text-align: center;
             line-height: 1.5;
+            flex-shrink: 0; /* 文字区域不压缩 */
         }
 
         /* 动画效果 */
@@ -131,7 +140,24 @@
                 font-size: 1.2rem;
             }
             .image-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr; /* 移动端单列 */
+            }
+            .image-card {
+                padding: 10px;
+            }
+        }
+
+        /* 平板适配 */
+        @media (min-width: 769px) and (max-width: 1200px) {
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr); /* 平板双列 */
+            }
+        }
+
+        /* 桌面端适配 */
+        @media (min-width: 1201px) {
+            .image-grid {
+                grid-template-columns: repeat(3, 1fr); /* 桌面端三列 */
             }
         }
     </style>
@@ -153,29 +179,78 @@
         <!-- 【可编辑】副标题 - 修改这里的文字即可更改主页副标题 -->
         <p class="sub-title">空穴阻挡层</p>
 
-        <!-- 图片展示区域 -->
+        <!-- 图片展示区域 - 10张图片 -->
         <div class="image-grid">
-            <!-- 【可编辑】图片卡片1 - f5-1.png -->
+            <!-- 图片1 -->
             <div class="image-card">
-                <!-- 修改src属性替换图片，格式为f1-1.png/f1-2.png等 -->
-                <img src="f1-1.png" alt="图片1" class="display-image">
-                <!-- 修改这里的文字更改第一张图片的描述 -->
-                <p class="image-desc">111</p>
+                <div class="image-wrapper">
+                    <img src="f5-1.png" alt="图片1" class="display-image">
+                </div>
+                <p class="image-desc"></p>
             </div>
-
-            <!-- 【可编辑】图片卡片2 - f5-2.png -->
+            <!-- 图片2 -->
             <div class="image-card">
-                <img src="f1-2.png" alt="图片2" class="display-image">
-                <p class="image-desc">111</p>
+                <div class="image-wrapper">
+                    <img src="f5-2.png" alt="图片2" class="display-image">
+                </div>
+                <p class="image-desc"></p>
             </div>
-
-            <!-- 【可编辑】图片卡片3 - f5-3.png（可按需添加/删除） -->
+            <!-- 图片3 -->
             <div class="image-card">
-                <img src="f1-3.png" alt="图片3" class="display-image">
-                <p class="image-desc">111</p>
+                <div class="image-wrapper">
+                    <img src="f5-3.png" alt="图片3" class="display-image">
+                </div>
+                <p class="image-desc"></p>
             </div>
-
-            <!-- 【可编辑】如需添加更多图片，复制上面的image-card块，修改src为f1-4.png、f1-5.png等即可 -->
+            <!-- 图片4 -->
+            <div class="image-card">
+                <div class="image-wrapper">
+                    <img src="f5-4.png" alt="图片4" class="display-image">
+                </div>
+                <p class="image-desc"></p>
+            </div>
+            <!-- 图片5 -->
+            <div class="image-card">
+                <div class="image-wrapper">
+                    <img src="f5-5.png" alt="图片5" class="display-image">
+                </div>
+                <p class="image-desc"></p>
+            </div>
+            <!-- 图片6 -->
+            <div class="image-card">
+                <div class="image-wrapper">
+                    <img src="f5-6.png" alt="图片6" class="display-image">
+                </div>
+                <p class="image-desc"></p>
+            </div>
+            <!-- 图片7 -->
+            <div class="image-card">
+                <div class="image-wrapper">
+                    <img src="f5-7.png" alt="图片7" class="display-image">
+                </div>
+                <p class="image-desc"></p>
+            </div>
+            <!-- 图片8 -->
+            <div class="image-card">
+                <div class="image-wrapper">
+                    <img src="f5-8.png" alt="图片8" class="display-image">
+                </div>
+                <p class="image-desc"></p>
+            </div>
+            <!-- 图片9 -->
+            <div class="image-card">
+                <div class="image-wrapper">
+                    <img src="f5-9.png" alt="图片9" class="display-image">
+                </div>
+                <p class="image-desc"></p>
+            </div>
+            <!-- 图片10 -->
+            <div class="image-card">
+                <div class="image-wrapper">
+                    <img src="f5-10.png" alt="图片10" class="display-image">
+                </div>
+                <p class="image-desc"></p>
+            </div>
         </div>
     </div>
 
