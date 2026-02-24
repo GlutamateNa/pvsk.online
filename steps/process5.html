@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>工艺流程 - 步骤5 | pvsk.online</title>
+  <style>
+    :root{
+      --bg:#05070d;
+      --text: rgba(231, 238, 255, 0.92);
+      --muted: rgba(231, 238, 255, 0.66);
+
+      --neon:#6aa7ff;
+      --neon2:#44d7ff;
+      --neon3:#2b5bff;
+
+      --panel: rgba(255,255,255,0.045);
+      --border: rgba(106,167,255,0.22);
+      --glow: 0 0 16px rgba(106,167,255,0.22), 0 0 30px rgba(68,215,255,0.10);
+      --glow-strong: 0 0 18px rgba(106,167,255,0.38), 0 0 42px rgba(68,215,255,0.18);
+
+      --radius: 18px;
+      --radius2: 14px;
+    }
+
+    html,body{margin:0;min-height:100%;}
+    body{
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC",
+                   "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      background: var(--bg);
+      position: relative;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    /* 冷蓝科幻背景 */
+    body::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(980px 560px at 70% 18%, rgba(106,167,255,0.22), transparent 60%),
+        radial-gradient(760px 520px at 22% 78%, rgba(68,215,255,0.14), transparent 62%),
+        radial-gradient(560px 420px at 10% 20%, rgba(43,91,255,0.12), transparent 58%),
+        linear-gradient(180deg, rgba(255,255,255,0.06), transparent 45%);
+      pointer-events:none;
+      filter: saturate(1.05);
+    }
+    body::after{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.07) 0 1px, transparent 1px 40px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 62px);
+      opacity: 0.09;
+      pointer-events:none;
+    }
+
+    .wrap{
+      position: relative;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 22px 16px 56px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:14px;
+      color: var(--muted);
+    }
+    .topbar .links{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+    }
+    .topbar a{
+      color: var(--text);
+      text-decoration:none;
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(106,167,255,0.06);
+      box-shadow: var(--glow);
+    }
+    .topbar a:hover{
+      background: rgba(106,167,255,0.11);
+      box-shadow: var(--glow-strong);
+    }
+
+    h1{
+      margin: 0;
+      font-size: 18px;
+      font-weight: 650;
+      letter-spacing: 1px;
+      text-shadow: 0 0 18px rgba(106,167,255,0.25);
+    }
+    .subtitle{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .panel{
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--panel);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--glow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* HUD 装饰 */
+    .panel::before{
+      content:"";
+      position:absolute; inset: 10px;
+      border-radius: calc(var(--radius) - 8px);
+      border: 1px solid rgba(68,215,255,0.10);
+      pointer-events:none;
+    }
+
+    .section{
+      padding: 18px 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .h2{
+      margin: 0;
+      font-size: 16px;
+      font-weight: 650;
+      letter-spacing: .8px;
+      color: rgba(231,238,255,0.95);
+      text-shadow: 0 0 16px rgba(68,215,255,0.16);
+    }
+
+    .desc{
+      margin: 0;
+      color: rgba(231,238,255,0.72);
+      font-size: 14px;
+      line-height: 1.9;
+    }
+
+    /* 视频容器 */
+    .videobox{
+      border: 1px solid rgba(106,167,255,0.20);
+      background: rgba(255,255,255,0.03);
+      border-radius: var(--radius2);
+      overflow: hidden;
+      box-shadow: 0 0 14px rgba(106,167,255,0.14);
+    }
+
+    video{
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #000;
+    }
+
+    .divider{
+      height: 1px;
+      background: rgba(106,167,255,0.16);
+      margin: 0 18px;
+    }
+
+    @media (max-width: 520px){
+      .section{ padding: 16px 14px 14px; }
+      .h2{ font-size: 15px; }
+      .desc{ font-size: 13px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div>pvsk.online</div>
+      <div class="links">
+        <a href="process.html">返回工艺流程</a>
+        <a href="page2.html">返回菜单</a>
+      </div>
+    </div>
+
+    <h1>工艺流程｜步骤 5：薄膜钝化</h1>
+    <p class="subtitle">
+      钝化手套箱氛围应控制在水氧小于0.01 ppm时开始，钝化时打开清洗；
+    </p>
+
+    <!-- 视频 1 -->
+    <div class="panel">
+      <div class="section">
+        <p class="h2">视频 1：钝化处理（process5-1）</p>
+        <p class="desc">
+          钝化剂1：1.5 mg/mL的p-FPEACl；转速4000 rpm；动态旋涂；用量80 μL；时间20 s；不退火
+        </p>
+        <div class="videobox">
+          <video controls playsinline preload="metadata">
+            <source src="process5-1.mp4" type="video/mp4">
+            你的浏览器不支持 video 标签。
+          </video>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 视频 2 -->
+      <div class="section">
+        <p class="h2">视频 2：钝化后现象与要点（process5-2）</p>
+        <p class="desc">
+          钝化剂2：0.5 mg/mL的EDAI_2；转速4000 rpm；滴加后立即旋涂；用量40 μL；时间30 s；85℃退火5 min
+        </p>
+        <div class="videobox">
+          <video controls playsinline preload="metadata">
+            <source src="process5-2.mp4" type="video/mp4">
+            你的浏览器不支持 video 标签。
+          </video>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
+
